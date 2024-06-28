@@ -1,0 +1,97 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "chamber-sf-map.tmx",
+    "expandedProjectPaths": [
+        ".",
+        "Tilesets"
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "Tilesets/Fences.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "Tilesets/Grass.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "Tilesets/Hills.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "Tilesets/House Decoration.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "Tilesets/House.tsx": {
+            "scaleInDock": 1
+        },
+        "Tilesets/Objects.tsx": {
+            "scaleInDock": 1
+        },
+        "Tilesets/Paths.tsx": {
+            "scaleInDock": 1
+        },
+        "Tilesets/Plant Decoration.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "Tilesets/Water.tsx": {
+            "scaleInDock": 1
+        },
+        "Tilesets/building.tsx": {
+            "dynamicWrapping": false
+        },
+        "Tilesets/edit.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 0.03125,
+            "scaleInEditor": 0.12
+        },
+        "Tilesets/greenhouse.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "Tilesets/interaction.tsx": {
+            "scaleInDock": 1
+        },
+        "chamber-sf-map.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1815,
+                "y": 4326
+            }
+        },
+        "greenhouse.tmx": {
+            "scale": 0.26095312499999995,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1603.7363032153767,
+                "y": 1283.7554637446863
+            }
+        }
+    },
+    "last.imagePath": "C:/code/chamber_sf/final/graphics/edit",
+    "map.height": 4,
+    "map.tileHeight": 64,
+    "map.tileWidth": 64,
+    "map.width": 2,
+    "openFiles": [
+        "chamber-sf-map.tmx",
+        "Tilesets/edit.tsx"
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "greenhouse.tmx",
+        "Tilesets/edit.tsx",
+        "chamber-sf-map.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 64,
+        "width": 64
+    }
+}

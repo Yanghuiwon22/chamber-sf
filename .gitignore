@@ -1,0 +1,7 @@
+﻿.idea
+- ing/__pycache__
+final/code/__pycache__
+final/venv
+final/dist
+final/build
+__pycache__
