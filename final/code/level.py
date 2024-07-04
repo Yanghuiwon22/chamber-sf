@@ -267,15 +267,6 @@ class Level:
 					Particle(plant.rect.topleft, plant.image, self.all_sprites_map, z = LAYERS['main'])
 					self.soil_layer.grid[plant.rect.centery // TILE_SIZE][plant.rect.centerx // TILE_SIZE].remove('P')
 
-	def first_func(self):
-		print('first_func')
-
-	def second_func(self):
-		print('second_func')
-
-	def third_func(self):
-		print('third_func')
-
 	def run(self,dt):
 		self.display_surface.fill('black')  # ---------> 검은 화면 기본세팅
 		# updates
@@ -297,6 +288,13 @@ class Level:
 			self.rain.update()
 		# self.sky.display(dt)
 
+		if not self.shop_active and not self.gh_active:
+			editing_icon = pygame.image.load('../graphics/edit/edit_maps_5.png')
+			editing_icon = pygame.transform.scale(editing_icon, (70,70))
+			self.edit_icon_rect = pygame.Rect(editing_icon.get_rect())
+			self.display_surface.blit(self.edit_icon_rect, [SCREEN_WIDTH - 80, SCREEN_HEIGHT-80])
+
+
 		# transition overlay
 		if self.player.sleep:                           # ------> 잠에 들면 화면이 까매지면서 모든 설정 초기화
 			self.transition.play()
@@ -317,6 +315,18 @@ class Level:
 		# 	self.grh_water_setup()
 		# elif self.dashboard.water_data == 'water_off' and self.dashboard.have_to_water == 'on':
 		# 	self.grh_water_setup()
+
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+
+			if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+				click_pos = pygame.mouse.get_pos()
+				print(f'click_pos : {click_pos} \n edit_icon_rect : {self.edit_icon_rect}')
+				if self.edit_icon_rect.collidepoint(click_pos):
+					print('clicked')
+				# print('clicked')
+
 
 
 

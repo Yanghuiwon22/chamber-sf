@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.2" name="edit" tilewidth="1280" tileheight="720" tilecount="20" columns="0">
+<tileset version="1.10" tiledversion="1.10.2" name="edit" tilewidth="1280" tileheight="720" tilecount="31" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="5">
   <image width="64" height="64" source="../../graphics/edit/Flooring_19.png"/>
@@ -60,5 +60,38 @@
  </tile>
  <tile id="32">
   <image width="262" height="263" source="../../graphics/edit/building.png"/>
+ </tile>
+ <tile id="33">
+  <image width="64" height="64" source="../../graphics/soil/bm.png"/>
+ </tile>
+ <tile id="34">
+  <image width="64" height="64" source="../../graphics/soil/br.png"/>
+ </tile>
+ <tile id="35">
+  <image width="64" height="64" source="../../graphics/soil/bl.png"/>
+ </tile>
+ <tile id="36">
+  <image width="64" height="64" source="../../graphics/soil/tm.png"/>
+ </tile>
+ <tile id="37">
+  <image width="64" height="64" source="../../graphics/soil/tr.png"/>
+ </tile>
+ <tile id="38">
+  <image width="64" height="64" source="../../graphics/soil/tl.png"/>
+ </tile>
+ <tile id="39">
+  <image width="64" height="64" source="../../graphics/soil/x.png"/>
+ </tile>
+ <tile id="40">
+  <image width="64" height="64" source="../../graphics/soil/o.png"/>
+ </tile>
+ <tile id="41">
+  <image width="64" height="64" source="../../graphics/soil/rm.png"/>
+ </tile>
+ <tile id="42">
+  <image width="64" height="64" source="../../graphics/soil/tbl.png"/>
+ </tile>
+ <tile id="43">
+  <image width="64" height="64" source="../../graphics/soil/lm.png"/>
  </tile>
 </tileset>

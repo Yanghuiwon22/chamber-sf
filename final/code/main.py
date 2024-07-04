@@ -34,7 +34,6 @@ class Game:
 					pygame.quit()
 					sys.exit()
 				elif event.type == pygame.JOYBUTTONDOWN:
-					# print(f"!{event.type}/ {event.button}")
 					if event.button == 9:
 						pygame.quit()
 						sys.exit()
@@ -43,18 +42,6 @@ class Game:
 			dt = self.clock.tick() / 1000
 			self.level.run(dt)
 			pygame.display.update()
-
-
-	# def show_start_screen(self):
-	# 	# game splash/start screen
-	#
-	# 	self.screen.fill(GREEN)
-	# 	self.draw_text('Greenhouse', 60, WHITE, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4)
-	# 	self.draw_text("log in to start",
-	# 				   22, WHITE, SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4)
-	#
-	# 	pygame.display.flip()
-	# 	self.wait_for_key()
 
 	def login_site(self):
 		index = 0
@@ -121,11 +108,9 @@ class Game:
 						input_list[index % 2].append(event.unicode)
 
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-					print('mouse')
 					if rect_signin.collidepoint(pygame.mouse.get_pos()):
 						result = self.cur.execute("SELECT * FROM User;")
 						for row in result:
-							print(row)
 							if row[1] == id and row[2] == password:
 								self.run()
 							else:
@@ -145,36 +130,6 @@ class Game:
 
 
 			pygame.display.flip()
-			# self.wait_for_key()
-
-	#
-		# while try_login:
-		# 	for event in pygame.event.get():
-		# 		if event.type == pygame.QUIT:
-		# 			pygame.quit()
-		#
-		# 		if event.type == pygame.KEYDOWN:
-		# 			print(event.unicode)
-
-
-
-
-	#
-	def wait_for_key(self):
-		waiting = True
-		while waiting:
-			self.clock.tick(FPS)
-			for event in pygame.event.get():
-
-				if event.type== pygame.QUIT:
-					waiting = False
-					self.running = False
-				if event.type == pygame.KEYUP:
-					waiting = False
-					self.run()
-				elif event.type == pygame.JOYBUTTONDOWN:
-					waiting = False
-					self.run()
 
 	def draw_text(self, text, size, color, x, y):
 		font = pygame.font.Font(self.font_name, size)
@@ -186,4 +141,4 @@ class Game:
 
 if __name__ == '__main__':
 	game = Game()
-	game.login_site()
+	game.run()
