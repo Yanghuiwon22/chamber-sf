@@ -10,6 +10,8 @@ from soil import SoilLayer
 from sky import Rain, Sky
 from random import randint
 from menu import Menu
+from edit import Edit
+
 from dashboard import DashBoard
 from realtime_data import Get_data
 
@@ -52,7 +54,6 @@ class Level:
 		# greenhouse
 		self.gh_active = False
 
-
 		# dashboard
 		# self.dashboard = DashBoard(self.player, self.toggle_dashboard, self.get_data)
 		# self.dashboard_active = False
@@ -65,7 +66,12 @@ class Level:
 
 		self.player.game = game
 
+		# self.text_save = self.font.render(f'save', True, (255, 255, 255))
+		# self.text_save_rect = self.text_save.get_rect(
+		# 	topleft=(SCREEN_WIDTH - 30 - self.text_save.get_width(), SCREEN_HEIGHT - 30 - self.text_save.get_height()))
 
+		self.edit = Edit()
+		self.edit_active = False
 
 	def setup(self):
 		tmx_data = load_pygame('../data/chamber-sf-map.tmx')
@@ -116,7 +122,7 @@ class Level:
 					interaction=self.interaction_sprites,
 					soil_layer=self.soil_layer,
 					toggle_shop=self.toggle_shop,
-					toggle_dashboard=self.toggle_dashboard
+					toggle_dashboard=self.toggle_dashboard,
 				)
 
 			if obj.name == 'Trader':
@@ -172,6 +178,11 @@ class Level:
 			surf = pygame.image.load('../graphics/world/chamber-sf-map.png').convert_alpha(),  # ----> 배경 화면 사진
 			groups = self.all_sprites_map,
 			z = LAYERS['ground'])
+
+	def draw_edit_map(self):
+		tmx_data = load_pygame('../data/chamber-sf-map.tmx')
+
+
 
 	def grh_setup(self):
 		tmx_data = load_pygame('data/chamber-sf-map.tmx')
@@ -270,6 +281,7 @@ class Level:
 	def run(self,dt):
 		self.display_surface.fill('black')  # ---------> 검은 화면 기본세팅
 		# updates
+
 		if self.shop_active:
 			self.menu.update()
 
@@ -288,11 +300,16 @@ class Level:
 			self.rain.update()
 		# self.sky.display(dt)
 
-		if not self.shop_active and not self.gh_active:
+		# 편집모드가 아닐 시 편집모드 아이콘 화면에 표시
+		if not self.shop_active and not self.gh_active and not self.edit_active:
 			editing_icon = pygame.image.load('../graphics/edit/edit_maps_5.png')
 			editing_icon = pygame.transform.scale(editing_icon, (70,70))
-			self.edit_icon_rect = pygame.Rect(editing_icon.get_rect())
-			self.display_surface.blit(self.edit_icon_rect, [SCREEN_WIDTH - 80, SCREEN_HEIGHT-80])
+			self.edit_icon_rect = pygame.Rect(SCREEN_WIDTH - 10 -  editing_icon.get_width(), SCREEN_HEIGHT - 10 - editing_icon.get_height(),
+											  editing_icon.get_width(), editing_icon.get_height())
+			pygame.draw.rect(self.display_surface, (0,0,0), self.edit_icon_rect, 2)
+			self.display_surface.blit(editing_icon, (self.edit_icon_rect.x, self.edit_icon_rect.y))
+
+			self.edit_active = True
 
 
 		# transition overlay
@@ -300,8 +317,8 @@ class Level:
 			self.transition.play()
 
 		if self.gh_active:
-			self.my_text = self.font.render(f'{self.player.pos_layer}', True, (255, 255, 255))
-			self.display_surface.blit(self.my_text, [30,30])
+			my_text = self.font.render(f'{self.player.pos_layer}', True, (255, 255, 255))
+			self.display_surface.blit(my_text, [30,30])
 
 		# if self.dashboard.light_data == 'led_off' and self.gh_active and not self.dashboard_active and self.player.pos_layer == 'mini_chamber':
 		# 	self.sky.sky_dark()
@@ -315,24 +332,6 @@ class Level:
 		# 	self.grh_water_setup()
 		# elif self.dashboard.water_data == 'water_off' and self.dashboard.have_to_water == 'on':
 		# 	self.grh_water_setup()
-
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-				pygame.quit()
-
-			if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-				click_pos = pygame.mouse.get_pos()
-				print(f'click_pos : {click_pos} \n edit_icon_rect : {self.edit_icon_rect}')
-				if self.edit_icon_rect.collidepoint(click_pos):
-					print('clicked')
-				# print('clicked')
-
-
-
-
-
-
-
 
 class CameraGroup(pygame.sprite.Group):
 	def __init__(self):
