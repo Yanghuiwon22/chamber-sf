@@ -309,8 +309,9 @@ class Level:
 			pygame.draw.rect(self.display_surface, (0,0,0), self.edit_icon_rect, 2)
 			self.display_surface.blit(editing_icon, (self.edit_icon_rect.x, self.edit_icon_rect.y))
 
-			self.edit_active = True
 
+		if self.edit_active:
+			self.edit.update()
 
 		# transition overlay
 		if self.player.sleep:                           # ------> 잠에 들면 화면이 까매지면서 모든 설정 초기화
@@ -332,6 +333,13 @@ class Level:
 		# 	self.grh_water_setup()
 		# elif self.dashboard.water_data == 'water_off' and self.dashboard.have_to_water == 'on':
 		# 	self.grh_water_setup()
+
+		# input 처리
+		mouse = pygame.mouse.get_pressed()
+
+		if mouse[0]:
+			if self.edit_icon_rect.collidepoint(pygame.mouse.get_pos()):
+				self.edit_active = True
 
 class CameraGroup(pygame.sprite.Group):
 	def __init__(self):
