@@ -70,7 +70,7 @@ class Level:
 		# self.text_save_rect = self.text_save.get_rect(
 		# 	topleft=(SCREEN_WIDTH - 30 - self.text_save.get_width(), SCREEN_HEIGHT - 30 - self.text_save.get_height()))
 
-		self.edit = Edit()
+		self.edit = Edit(self.toggle_edit)
 		self.edit_active = False
 
 	def setup(self):
@@ -236,6 +236,13 @@ class Level:
 	def toggle_shop(self):
 		self.shop_active = not self.shop_active
 
+	def toggle_edit(self):
+		self.edit_active = False
+		# print(f'5. def toggle_edit')
+		# print(f'6. before change : {self.edit_active}')
+		# self.edit_active = not self.edit_active
+		# print(f'7. after change : {self.edit_active}')
+
 	def toggle_dashboard(self):
 		self.dashboard_active = not self.dashboard_active
 		self.dashboard.index = 0
@@ -303,23 +310,23 @@ class Level:
 		# 편집모드가 아닐 시 편집모드 아이콘 화면에 표시
 		if not self.shop_active and not self.gh_active and not self.edit_active:
 			editing_icon = pygame.image.load('../graphics/edit/edit_maps_5.png')
-			editing_icon = pygame.transform.scale(editing_icon, (70,70))
-			self.edit_icon_rect = pygame.Rect(SCREEN_WIDTH - 10 -  editing_icon.get_width(), SCREEN_HEIGHT - 10 - editing_icon.get_height(),
+			editing_icon = pygame.transform.scale(editing_icon, (70, 70))
+			self.edit_icon_rect = pygame.Rect(SCREEN_WIDTH - 10 - editing_icon.get_width(),
+											  SCREEN_HEIGHT - 10 - editing_icon.get_height(),
 											  editing_icon.get_width(), editing_icon.get_height())
-			pygame.draw.rect(self.display_surface, (0,0,0), self.edit_icon_rect, 2)
+			pygame.draw.rect(self.display_surface, (0, 0, 0), self.edit_icon_rect, 2)
 			self.display_surface.blit(editing_icon, (self.edit_icon_rect.x, self.edit_icon_rect.y))
-
 
 		if self.edit_active:
 			self.edit.update()
 
 		# transition overlay
-		if self.player.sleep:                           # ------> 잠에 들면 화면이 까매지면서 모든 설정 초기화
+		if self.player.sleep:  # ------> 잠에 들면 화면이 까매지면서 모든 설정 초기화
 			self.transition.play()
 
 		if self.gh_active:
 			my_text = self.font.render(f'{self.player.pos_layer}', True, (255, 255, 255))
-			self.display_surface.blit(my_text, [30,30])
+			self.display_surface.blit(my_text, [30, 30])
 
 		# if self.dashboard.light_data == 'led_off' and self.gh_active and not self.dashboard_active and self.player.pos_layer == 'mini_chamber':
 		# 	self.sky.sky_dark()
@@ -335,11 +342,26 @@ class Level:
 		# 	self.grh_water_setup()
 
 		# input 처리
+		# mouse = pygame.mouse.get_pressed()
+		#
+		# if mouse[0]:
+		# 	if self.edit_icon_rect.collidepoint(pygame.mouse.get_pos()):
+		#
+		# 		self.edit_active = True
+		# 		self.edit.timer.activate()
+		self.input()
+		print(f'8. self.edit_active : {self.edit_active}')
+
+	def input(self):
 		mouse = pygame.mouse.get_pressed()
 
 		if mouse[0]:
-			if self.edit_icon_rect.collidepoint(pygame.mouse.get_pos()):
-				self.edit_active = True
+			if self.edit_icon_rect.collidepoint(pygame.mouse.get_pos()) and not self.edit_active:
+				# print('2-0. level mouse clicked')
+				# self.edit_active = True
+				self.edit_active = not self.edit_active
+				self.edit.timer.activate()
+
 
 class CameraGroup(pygame.sprite.Group):
 	def __init__(self):
