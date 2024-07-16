@@ -237,9 +237,7 @@ class Level:
 		self.shop_active = not self.shop_active
 
 	def toggle_edit(self):
-		print(f'4. run toggle_edit')
 		self.edit_active = False
-		print(f'5. toggle_edit - edit_active : {self.edit_active}')
 
 	def toggle_dashboard(self):
 		self.dashboard_active = not self.dashboard_active
@@ -340,27 +338,17 @@ class Level:
 		# elif self.dashboard.water_data == 'water_off' and self.dashboard.have_to_water == 'on':
 		# 	self.grh_water_setup()
 
-		# input 처리
-		# mouse = pygame.mouse.get_pressed()
-		#
-		# if mouse[0]:
-		# 	if self.edit_icon_rect.collidepoint(pygame.mouse.get_pos()):
-		#
-		# 		self.edit_active = True
-		# 		self.edit.timer.activate()
 		self.input()
-		# print(f'8. self.edit_active : {self.edit_active}')
 
 	def input(self):
 		mouse = pygame.mouse.get_pressed()
+		self.edit.timer.update()
 
 		if mouse[0]:
 			if self.edit_icon_rect.collidepoint(pygame.mouse.get_pos()) and not self.edit_active and not self.edit.timer.active:
-				print(f'1-9. level self.edit_active : {self.edit_active}')
-				print('2-0. level mouse clicked')
-				# self.edit_active = True
-				self.edit_active = not self.edit_active
-				# self.edit.timer.activate()
+				self.edit_active = True
+				# self.edit_active = not self.edit_active
+				self.edit.timer.activate()
 
 
 class CameraGroup(pygame.sprite.Group):
