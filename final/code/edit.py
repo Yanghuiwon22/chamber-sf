@@ -19,6 +19,7 @@ class Edit:
                     self.timer.activate()
 
 
+    
 
     def display(self):
         save_surf = self.font.render('Save', False, 'Black')
