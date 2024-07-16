@@ -18,12 +18,8 @@ class Edit:
                     self.toggle_edit()
                     self.timer.activate()
 
-    def input(self):
-        mouse = pygame.mouse.get_pressed()
 
-        if mouse[0]:
-            if self.save_rect.collidepoint(pygame.mouse.get_pos()):
-                self.toggle_edit()
+    
 
     def display(self):
         save_surf = self.font.render('Save', False, 'Black')
