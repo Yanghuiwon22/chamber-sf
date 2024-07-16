@@ -3,7 +3,7 @@ from timer import Timer
 from settings import *
 class Edit:
     def __init__(self, toggle_edit):
-        self.timer = Timer(200)
+        self.timer = Timer(1000)
         self.font = pygame.font.Font('../font/LycheeSoda.ttf', 30)
         self.display_surface = pygame.display.get_surface()
 
@@ -20,9 +20,7 @@ class Edit:
                 if self.save_rect.collidepoint(pygame.mouse.get_pos()):
                     # print('4. save clicked')
                     self.toggle_edit()
-
                     self.timer.activate()
-                    print('save')
 
 
     def display(self):
