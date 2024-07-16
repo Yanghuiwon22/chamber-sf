@@ -345,9 +345,9 @@ class Level:
 		self.edit.timer.update()
 
 		if mouse[0]:
-			if self.edit_icon_rect.collidepoint(pygame.mouse.get_pos()) and not self.edit_active and not self.edit.timer.active:
+			if self.edit_icon_rect.collidepoint(
+					pygame.mouse.get_pos()) and not self.edit_active and not self.edit.timer.active:
 				self.edit_active = True
-				# self.edit_active = not self.edit_active
 				self.edit.timer.activate()
 
 
