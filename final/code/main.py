@@ -54,29 +54,33 @@ class Game:
 
 			self.draw_text('Chamber-sf', 60, BLACK, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4)
 
-
 			self.draw_text(error_message, 30, error_color, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 + 60 + 10)
-			pygame.draw.rect(self.screen, (255,255,255), [SCREEN_WIDTH / 2 - 180*3/2, SCREEN_HEIGHT / 4 + 110 + 10, 180*3, (60+10)*4])
-			self.draw_text('LOGIN', 30, (255, 127, 0), SCREEN_WIDTH / 2 - 180*3/2 + 50, SCREEN_HEIGHT / 4 + 110 + 10+10)
+			pygame.draw.rect(self.screen, (255, 255, 255),
+							 [SCREEN_WIDTH / 2 - 180 * 3 / 2, SCREEN_HEIGHT / 4 + 110 + 10, 180 * 3, (60 + 10) * 4])
+			self.draw_text('LOGIN', 30, (255, 127, 0), SCREEN_WIDTH / 2 - 180 * 3 / 2 + 50,
+						   SCREEN_HEIGHT / 4 + 110 + 10 + 10)
 
-			rect_id = pygame.Rect(SCREEN_WIDTH / 2 - 180*3/2 +20, SCREEN_HEIGHT / 4 + 170 +10, 180*3 -40, 60)
-			rect_pw = pygame.Rect(SCREEN_WIDTH / 2 - 180*3/2 +20, SCREEN_HEIGHT / 4 + 170 + 60 + 20 + 10, 180*3 - 40, 60)
-
+			rect_id = pygame.Rect(SCREEN_WIDTH / 2 - 180 * 3 / 2 + 20, SCREEN_HEIGHT / 4 + 170 + 10, 180 * 3 - 40, 60)
+			rect_pw = pygame.Rect(SCREEN_WIDTH / 2 - 180 * 3 / 2 + 20, SCREEN_HEIGHT / 4 + 170 + 60 + 20 + 10,
+								  180 * 3 - 40, 60)
 
 			if index % 2 == 0:
-				pygame.draw.rect(self.screen, (0,136,85), rect_id, 2)
+				pygame.draw.rect(self.screen, (0, 136, 85), rect_id, 2)
 				pygame.draw.rect(self.screen, (200, 200, 200), rect_pw, 2)
 
 			else:
 				pygame.draw.rect(self.screen, (200, 200, 200), rect_id, 2)
-				pygame.draw.rect(self.screen, (0,136,85), rect_pw, 2)
+				pygame.draw.rect(self.screen, (0, 136, 85), rect_pw, 2)
 
-			self.draw_text('ID', 30, (176, 176, 176), SCREEN_WIDTH / 2 - 180*3/2 + 50, SCREEN_HEIGHT / 4 + 170+20)
-			self.draw_text('PW', 30, (176, 176, 176), SCREEN_WIDTH / 2 - 180*3/2 + 50, SCREEN_HEIGHT / 4 + 170 + 60 + 20 +20)
+			self.draw_text('ID', 30, (176, 176, 176), SCREEN_WIDTH / 2 - 180 * 3 / 2 + 50, SCREEN_HEIGHT / 4 + 170 + 20)
+			self.draw_text('PW', 30, (176, 176, 176), SCREEN_WIDTH / 2 - 180 * 3 / 2 + 50,
+						   SCREEN_HEIGHT / 4 + 170 + 60 + 20 + 20)
 
-			rect_signin = pygame.Rect(SCREEN_WIDTH / 2 - 30 - 60,SCREEN_HEIGHT / 4 + 170 + 60 + 20 + 10+ 60+10, 180, 60)
-			pygame.draw.rect(self.screen, (0,136,85), rect_signin)
-			self.draw_text('SIGN IN', 30, (255,255,255), SCREEN_WIDTH / 2 - 30 - 60 + 90, SCREEN_HEIGHT / 4 + 170 + 60 + 20 + 90)
+			rect_signin = pygame.Rect(SCREEN_WIDTH / 2 - 30 - 60, SCREEN_HEIGHT / 4 + 170 + 60 + 20 + 10 + 60 + 10, 180,
+									  60)
+			pygame.draw.rect(self.screen, (0, 136, 85), rect_signin)
+			self.draw_text('SIGN IN', 30, (255, 255, 255), SCREEN_WIDTH / 2 - 30 - 60 + 90,
+						   SCREEN_HEIGHT / 4 + 170 + 60 + 20 + 90)
 
 			id = ''.join(input_list[0])
 			password = ''.join(input_list[1])
@@ -125,9 +129,7 @@ class Game:
 						index = 1
 
 			self.draw_text(''.join(input_list[0]), 60, BLACK, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 + 170)
-			self.draw_text(''.join(input_list[1]), 60, BLACK, SCREEN_WIDTH / 2,  SCREEN_HEIGHT / 4 + 170+ 60 +20)
-
-
+			self.draw_text(''.join(input_list[1]), 60, BLACK, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 + 170 + 60 + 20)
 
 			pygame.display.flip()
 
@@ -141,4 +143,5 @@ class Game:
 
 if __name__ == '__main__':
 	game = Game()
+	# game.login_site()
 	game.run()

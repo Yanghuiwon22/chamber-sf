@@ -22,6 +22,7 @@ class Edit:
     
 
     def display(self):
+        # edit mode text 세팅
         save_surf = self.font.render('Save', False, 'Black')
         self.save_rect = save_surf.get_rect()
         self.save_rect.topleft = SCREEN_WIDTH-10-self.save_rect.width, SCREEN_HEIGHT-10-self.save_rect.height
@@ -32,6 +33,14 @@ class Edit:
 
         self.display_surface.blit(save_surf, self.save_rect)
         self.display_surface.blit(editmode_surf, editmode_rect)
+
+        # 노지, 온실 선택창
+        edit_box_width = 200
+        edit_box_height = 300
+        edit_box = pygame.Rect(SCREEN_WIDTH - 10 - edit_box_width, SCREEN_HEIGHT - 20 - self.save_rect.height - edit_box_height, edit_box_width, edit_box_height)
+
+        pygame.draw.rect(self.display_surface, GREEN, edit_box, border_radius=10)
+
     def update(self):
         self.display()
         self.input()
