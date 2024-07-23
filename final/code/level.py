@@ -179,10 +179,6 @@ class Level:
 			groups = self.all_sprites_map,
 			z = LAYERS['ground'])
 
-	def draw_edit_map(self):
-		tmx_data = load_pygame('../data/chamber-sf-map.tmx')
-
-
 
 	def grh_setup(self):
 		tmx_data = load_pygame('data/chamber-sf-map.tmx')
