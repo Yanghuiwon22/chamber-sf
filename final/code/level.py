@@ -70,7 +70,7 @@ class Level:
 		# self.text_save_rect = self.text_save.get_rect(
 		# 	topleft=(SCREEN_WIDTH - 30 - self.text_save.get_width(), SCREEN_HEIGHT - 30 - self.text_save.get_height()))
 
-		self.edit = Edit(self.toggle_edit)
+		self.edit = Edit()
 		self.edit_active = False
 
 	def setup(self):
@@ -88,21 +88,21 @@ class Level:
 		for x, y, surf in tmx_data.get_layer_by_name('Fence').tiles():
 			Generic((x * TILE_SIZE,y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
 
-		# water 
+		# water
 		water_frames = import_folder('../graphics/water')
 		for x, y, surf in tmx_data.get_layer_by_name('Water').tiles():
 			Water((x * TILE_SIZE,y * TILE_SIZE), water_frames, self.all_sprites_map)
 
-		# trees 
+		# trees
 		for obj in tmx_data.get_layer_by_name('Trees'):
 			Tree(
-				pos = (obj.x, obj.y), 
-				surf = obj.image, 
+				pos = (obj.x, obj.y),
+				surf = obj.image,
 				groups = [self.all_sprites_map, self.collision_sprites, self.tree_sprites],
 				name = obj.name,
 				player_add = self.player_add)
 
-		# wildflowers 
+		# wildflowers
 		for obj in tmx_data.get_layer_by_name('Decoration'):
 			WildFlower((obj.x, obj.y), obj.image, [self.all_sprites_map, self.collision_sprites])
 
@@ -179,6 +179,10 @@ class Level:
 			groups = self.all_sprites_map,
 			z = LAYERS['ground'])
 
+	def draw_edit_map(self):
+		tmx_data = load_pygame('../data/chamber-sf-map.tmx')
+
+
 
 	def grh_setup(self):
 		tmx_data = load_pygame('data/chamber-sf-map.tmx')
@@ -231,9 +235,6 @@ class Level:
 
 	def toggle_shop(self):
 		self.shop_active = not self.shop_active
-
-	def toggle_edit(self):
-		self.edit_active = False
 
 	def toggle_dashboard(self):
 		self.dashboard_active = not self.dashboard_active
@@ -300,26 +301,25 @@ class Level:
 		# self.sky.display(dt)
 
 		# 편집모드가 아닐 시 편집모드 아이콘 화면에 표시
-		# print(f'7. self.edit_active : {self.edit_active}')
 		if not self.shop_active and not self.gh_active and not self.edit_active:
 			editing_icon = pygame.image.load('../graphics/edit/edit_maps_5.png')
-			editing_icon = pygame.transform.scale(editing_icon, (70, 70))
-			self.edit_icon_rect = pygame.Rect(SCREEN_WIDTH - 10 - editing_icon.get_width(),
-											  SCREEN_HEIGHT - 10 - editing_icon.get_height(),
+			editing_icon = pygame.transform.scale(editing_icon, (70,70))
+			self.edit_icon_rect = pygame.Rect(SCREEN_WIDTH - 10 -  editing_icon.get_width(), SCREEN_HEIGHT - 10 - editing_icon.get_height(),
 											  editing_icon.get_width(), editing_icon.get_height())
-			pygame.draw.rect(self.display_surface, (0, 0, 0), self.edit_icon_rect, 2)
+			pygame.draw.rect(self.display_surface, (0,0,0), self.edit_icon_rect, 2)
 			self.display_surface.blit(editing_icon, (self.edit_icon_rect.x, self.edit_icon_rect.y))
+
 
 		if self.edit_active:
 			self.edit.update()
 
 		# transition overlay
-		if self.player.sleep:  # ------> 잠에 들면 화면이 까매지면서 모든 설정 초기화
+		if self.player.sleep:                           # ------> 잠에 들면 화면이 까매지면서 모든 설정 초기화
 			self.transition.play()
 
 		if self.gh_active:
 			my_text = self.font.render(f'{self.player.pos_layer}', True, (255, 255, 255))
-			self.display_surface.blit(my_text, [30, 30])
+			self.display_surface.blit(my_text, [30,30])
 
 		# if self.dashboard.light_data == 'led_off' and self.gh_active and not self.dashboard_active and self.player.pos_layer == 'mini_chamber':
 		# 	self.sky.sky_dark()
@@ -334,18 +334,12 @@ class Level:
 		# elif self.dashboard.water_data == 'water_off' and self.dashboard.have_to_water == 'on':
 		# 	self.grh_water_setup()
 
-		self.input()
-
-	def input(self):
+		# input 처리
 		mouse = pygame.mouse.get_pressed()
-		self.edit.timer.update()
 
 		if mouse[0]:
-			if self.edit_icon_rect.collidepoint(pygame.mouse.get_pos()) and not self.edit_active and not self.edit.timer.active:
+			if self.edit_icon_rect.collidepoint(pygame.mouse.get_pos()):
 				self.edit_active = True
-				# self.edit_active = not self.edit_active
-				self.edit.timer.activate()
-
 
 class CameraGroup(pygame.sprite.Group):
 	def __init__(self):

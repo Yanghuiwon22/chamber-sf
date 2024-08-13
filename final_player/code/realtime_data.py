@@ -49,9 +49,9 @@ class Get_data:
             dic_lab = json.loads(result.decode('utf-8'))
             realtime_lab = dic_lab['lab']
 
-            output['day_time'] = realtime_lab['day_time']
-            output['day_temp'] = realtime_lab['day_temp']
-            output['day_hum'] = realtime_lab['day_humid']
+            output['day_time'] = realtime_lab['timestamp']
+            output['day_temp'] = realtime_lab['temperature']
+            output['day_hum'] = realtime_lab['humidity']
 
             # return output
             return [output['day_temp'], output['day_hum'], '--']
@@ -76,9 +76,9 @@ class Get_data:
             dic_lab = json.loads(result.decode('utf-8'))
             realtime_lab = dic_lab['grh']
 
-            output['day_time'] = realtime_lab['day_time']
-            output['day_temp'] = realtime_lab['day_temp']
-            output['day_hum'] = realtime_lab['day_humid']
+            output['day_time'] = realtime_lab['timestamp']
+            output['day_temp'] = realtime_lab['temperature']
+            output['day_hum'] = realtime_lab['humidity']
 
             # return output
             return [output['day_temp'], output['day_hum'], '--']
