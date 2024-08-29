@@ -29,10 +29,13 @@ class DashBoard:
         self.title_width = 200
 
         # data
-        self.get_data = get_data.chamber_data()
+        self.get_data = get_data.chamber_data() # ---> 미니챔버 실시간 데이터 로드
         self.get_data_graph = get_data
         self.get_lab_data = get_data.get_lab_data()
         self.get_greenhouse_data = get_data.get_gh_data()
+
+        self.livedata_mini_chamber = get_data.livedata_mini_chamber
+
 
         # control
         self.index_light = 0
@@ -49,10 +52,8 @@ class DashBoard:
         self.have_to_vent = 'off'
         self.have_to_water = 'off'
 
-
-
-        on_button = 'graphics/edit/on_button.png'
-        off_button = 'graphics/edit/off_button.png'
+        on_button = '../graphics/edit/on_button.png'
+        off_button = '../graphics/edit/off_button.png'
         self.control_status = [off_button, on_button]
 
         # entries
@@ -82,7 +83,10 @@ class DashBoard:
         date = self.options_dates[self.date_index]
         self.get_graph = get_data.get_chamber_graph(date, 't_h')
         self.get_graph_lux = get_data.get_chamber_graph(date, 'lux')
-        # self.get_week_data = get_data.get_week_data()
+        try:
+            self.get_week_data = get_data.get_week_data()
+        except:
+            self.get_week_data = None
         self.get_graph_week = get_data.draw_week_data()
 
     def setup(self):
@@ -340,6 +344,24 @@ class DashBoard:
         self.date_rect = text_surf.get_rect(center=(date_rect.centerx, date_rect.centery))
         self.display_surface.blit(text_surf, self.date_rect)
 
+    def show_entry_fake(self, top):
+        fake_surf = self.font.render('Live data is currently not available : The data being displayed is historical', False, 'red')
+        fake_rect = pygame.Rect(SCREEN_WIDTH/2 -  fake_surf.get_width()/2, top,
+                                fake_surf.get_width(), fake_surf.get_height())
+        self.fake_rect = fake_surf.get_rect(center=(fake_rect.centerx, fake_rect.centery))
+        self.display_surface.blit(fake_surf, self.fake_rect)
+
+    def show_entry_updated_time(self, text_surf, color='black'):
+        updateed_time_surf = self.font.render(text_surf, False, color)
+        top = self.bg_rect.bottom - updateed_time_surf.get_height() - self.space*3
+        updated_time_rect = pygame.Rect(self.bg_rect.right-updateed_time_surf.get_width()-self.space*3, top,
+                                        updateed_time_surf.get_width(), updateed_time_surf.get_height())
+
+        self.updated_time_rect = updateed_time_surf.get_rect(center=(updated_time_rect.centerx, updated_time_rect.centery))
+        self.display_surface.blit(updateed_time_surf, self.updated_time_rect)
+
+
+
     def get_chamber_data(self):
         self.options_data = self.get_data
 
@@ -395,11 +417,18 @@ class DashBoard:
         self.get_grh_data()
         self.get_lab208_data()
 
-        self.show_entry_bg('graphics/edit/monitor.png')
+        self.show_entry_bg('../graphics/edit/monitor.png')
         pygame.draw.rect(self.display_surface, 'white', self.bg_rect)
-        self.show_entry_bg('graphics/edit/monitor.png')
+        self.show_entry_bg('../graphics/edit/monitor.png')
+
 
         if self.player.pos_layer == 'mini_chamber':
+            if not self.livedata_mini_chamber:
+                self.show_entry_updated_time(f'UPDATED TIME : {self.get_data["Date"]} {self.get_data["Time"]}', color='red')
+                self.show_entry_fake(top=self.bg_rect.bottom + self.space)
+            else:
+                self.show_entry_updated_time(f'UPDATED TIME : {self.get_data["Date"]} {self.get_data["Time"]}', color='black')
+
             if self.index == 0:
                 for title_index, title_surf in enumerate(self.title_surf):
                     top = self.main_rect.top + title_index * (self.main_rect.height / 2 )
@@ -428,7 +457,14 @@ class DashBoard:
                 top = self.bg_rect.top + self.space*4
                 self.show_entry_date(date_surf, top)
 
-                file_path = 'graphics/chamber_graph/chamber_t_h.png'
+                try:
+                    file_path = '../graphics/chamber_graph/chamber_t_h.png'
+                except:
+                    file_path = '../graphics/chamber_graph/fake_t_h.png'
+                    top = self.bg_rect.top + self.space * 4
+                    self.show_entry_fake(top)
+
+
                 top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 self.show_entry_img(file_path, top)
 
@@ -437,7 +473,7 @@ class DashBoard:
                 top = self.bg_rect.top + self.space*4
                 self.show_entry_date(date_surf, top)
 
-                file_path = 'graphics/chamber_graph/chamber_lux.png'
+                file_path = '../graphics/chamber_graph/chamber_lux.png'
                 top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 self.show_entry_img(file_path, top)
 
@@ -446,7 +482,7 @@ class DashBoard:
                 top = self.bg_rect.top + self.space*4
                 self.show_entry_date(date_surf, top)
 
-                file_path = 'graphics/chamber_graph/week_graph_t_h.png'
+                file_path = '../graphics/chamber_graph/week_graph_t_h.png'
                 top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 self.show_entry_img(file_path, top)
 
@@ -455,7 +491,7 @@ class DashBoard:
                 top = self.bg_rect.top + self.space*4
                 self.show_entry_date(date_surf, top)
 
-                file_path = 'graphics/chamber_graph/week_graph.png'
+                file_path = '../graphics/chamber_graph/week_graph.png'
                 top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 self.show_entry_img(file_path, top)
 

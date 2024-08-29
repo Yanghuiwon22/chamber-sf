@@ -35,7 +35,9 @@ class Get_data:
         self.gh_text = {'day_time': '--', 'day_temp' : -99, 'day_hum' : -99}
         self.chamber_text = {'Time': '--', 'temp' : -99, 'hum' : -99, 'lux': -99}
 
+        self.livedata_mini_chamber = False
 
+    # 헤이홈 연구실 데이터 
     def get_lab_data(self):
         url = 'http://web01.taegon.kr:7600/recent'
         print("get_lab_data")
@@ -63,6 +65,7 @@ class Get_data:
         #     "day_hum": 85.2,
         # }
 
+    # 헤이홈 온실 데이터
     def get_gh_data(self):
         url = 'http://web01.taegon.kr:7600/recent'
         print("get_lab_data")
@@ -82,6 +85,8 @@ class Get_data:
 
             # return output
             return [output['day_temp'], output['day_hum'], '--']
+        
+    # 헤이홈 온실 데이터 정리 (화면에 표시되는 형식으로)
     def gh_display(self,dt):
         self.gh_display_dt += dt
         if self.gh_display_dt < 1 and self.gh_text["day_time"] == '--':
@@ -98,6 +103,7 @@ class Get_data:
             (255, 255, 255))
         self.display_surface.blit(self.my_text, [200, 500])
 
+    # 헤이홈 연구실 데이터 정리 (화면에 표시되는 형식으로)
     def lab_display(self, dt):
         self.lab_display_dt += dt
         if self.lab_display_dt < 1 and self.lab_text["day_time"] == '--':
@@ -112,25 +118,40 @@ class Get_data:
         self.my_text = self.my_font.render(f'lab : {self.lab_text["day_time"]} - {self.lab_text["day_temp"]:.1f}C, {self.lab_text["day_hum"]:.1f}%', True, (0, 0, 0))
         self.display_surface.blit(self.my_text, [200,200])
 
-
+    # 미니챔버 데이터 가져오기
     def chamber_data(self):
         url = 'https://api.thingspeak.com/channels/1999883/feeds.json?api_key=XP1R5CVUPVXTNJT0&'
 
         output = {}
         response = requests.get(url + 'results=1')
         if response.status_code == 200:
+            self.livedata_mini_chamber = True
             df = pd.DataFrame(response.json()['feeds'])
             df.rename(columns={'field1': 'temp', 'field2': 'hum', 'field3':'lux'}, inplace=True)
             df.insert(loc=0, column='Time', value=df['created_at'][0].split('T')[1].split('Z')[0])
+            df.insert(loc=0, column='Date', value=df['created_at'][0].split('T')[0])
+
             df.drop(columns=['created_at','entry_id','field4'], inplace=True)
 
             df['Time'] = pd.to_datetime(df['Time']) + pd.Timedelta(hours=9)
             df['Time'] = df['Time'].dt.strftime('%H:%M:%S')
+            output['Date'] = df['Date'].values[0]
             output['Time'] = df['Time'].values[0]
+
+            # output['Time'] = datetime.strptime(df['Time'].values[0], 'H:%M:%S')
             output['temp'] = df['temp'].values[0]
             output['hum'] = df['hum'].values[0]
             output['lux'] = df['lux'].values[0]
-        return [output['temp'], output['hum'], output['lux']]
+        else:
+            self.livedata_mini_chamber = False
+
+        # 실시간 데이터가 반영되지 않을때 (과거 데이터를 수신할 때)
+        set_time = datetime.strptime(output['Time'], ('%H:%M:%S'))
+        if (datetime.now() - set_time).seconds/60 > 5 and output['Date'] != datetime.now().strftime('%Y-%m-%d'):
+            self.livedata_mini_chamber = False
+
+        return {'Date' : output['Date'], 'Time' : output['Time'], 'temp' : output['temp'], 'hum' : output['hum'], 'lux' : output['lux']}
+
 
     def get_chamber_data(self):
         url = 'https://api.thingspeak.com/channels/1999883/feeds.json?api_key=XP1R5CVUPVXTNJT0&'
@@ -170,15 +191,18 @@ class Get_data:
     def get_chamber_graph(self, date, y):
         print('run get_chamber_graph')
         url = f"https://raw.githubusercontent.com/Yanghuiwon22/chamber_data/main/output/graph/{date}_{y}.png"
-        response = urllib.request.urlopen(url)
+        try:
+            response = urllib.request.urlopen(url)
 
-        if response.getcode() == 200:
-            print('success')
-            data = response.read()
-            image = Image.open(io.BytesIO(data))
+            if response.getcode() == 200:
+                print('success')
+                data = response.read()
+                image = Image.open(io.BytesIO(data))
 
-            file_path = f'graphics/chamber_graph/chamber_{y}.png'
-            image.save(file_path)
+                file_path = f'graphics/chamber_graph/chamber_{y}.png'
+                image.save(file_path)
+        except:
+            pass
 
     def get_week_data(self):
         date = datetime.now()
@@ -187,41 +211,46 @@ class Get_data:
         date_range = [date - timedelta(days=x) for x in range(7)]
         date_range.sort()
 
-        print(date_range)
         df_all = pd.DataFrame()
 
-        for url_date in date_range:
-            url = f'https://raw.githubusercontent.com/Yanghuiwon22/chamber_data/main/output/csv/{url_date}.csv'
-            response = urllib.request.urlopen(url)
+        try:
+            for url_date in date_range:
+                url = f'https://raw.githubusercontent.com/Yanghuiwon22/chamber_data/main/output/csv/{url_date}.csv'
+                response = urllib.request.urlopen(url)
 
-            if response.getcode() == 200:
-                data = response.read().decode('utf-8')
-                df = pd.read_csv(io.StringIO(data))
-                df_all = pd.concat([df_all, df])
-                df_all.reset_index(drop=True)
+                if response.getcode() == 200:
+                    data = response.read().decode('utf-8')
+                    df = pd.read_csv(io.StringIO(data))
+                    df_all = pd.concat([df_all, df])
+                    df_all.reset_index(drop=True)
 
-        url = 'https://api.thingspeak.com/channels/1999883/feeds.json?api_key=XP1R5CVUPVXTNJT0&'
+            url = 'https://api.thingspeak.com/channels/1999883/feeds.json?api_key=XP1R5CVUPVXTNJT0&'
 
-        output = {}
-        response = requests.get(url + 'results=5000')
-        if response.status_code == 200:
-            df = pd.DataFrame(response.json()['feeds'])
-            df.rename(columns={'field1': 'temp', 'field2': 'hum', 'field3':'lux'}, inplace=True)
-            df.insert(loc=0, column='Time', value=df['created_at'][0].split('T')[1].split('Z')[0])
-            df.drop(columns=['created_at','entry_id','field4'], inplace=True)
+            output = {}
+            response = requests.get(url + 'results=5000')
+            if response.status_code == 200:
+                df = pd.DataFrame(response.json()['feeds'])
+                df.rename(columns={'field1': 'temp', 'field2': 'hum', 'field3':'lux'}, inplace=True)
+                df.insert(loc=0, column='Time', value=df['created_at'][0].split('T')[1].split('Z')[0])
+                df.drop(columns=['created_at','entry_id','field4'], inplace=True)
 
-            df['Time'] = pd.to_datetime(df['Time']) + pd.Timedelta(hours=9)
-            df['Time'] = df['Time'].dt.strftime('%H:%M:%S')
-            output['Time'] = df['Time'].values[0]
-            output['temp'] = df['temp'].values[0]
-            output['hum'] = df['hum'].values[0]
-            output['lux'] = df['lux'].values[0]
-        return [output['temp'], output['hum'], output['lux']]
+                df['Time'] = pd.to_datetime(df['Time']) + pd.Timedelta(hours=9)
+                df['Time'] = df['Time'].dt.strftime('%H:%M:%S')
+                output['Time'] = df['Time'].values[0]
+                output['temp'] = df['temp'].values[0]
+                output['hum'] = df['hum'].values[0]
+                output['lux'] = df['lux'].values[0]
+            return [output['temp'], output['hum'], output['lux']]
 
-        df_all.to_csv('df_all.csv')
+            df_all.to_csv('df_all.csv')
+        except:
+            pass
+            # date = datetime.strptime('2024-05-28', '%Y-%m-%d')
+            # date_range = [date - timedelta(days=x) for x in range(7)]
+
 
     def draw_week_data(self):
-        df = pd.read_csv('df_all.csv')
+        df = pd.read_csv('fake_df.csv')
 
         df = df[['Date&Time','Time', 'temp', 'hum', 'lux']].dropna()
         # df['Date'] = df['Date&Time'].str.split(' ').str[0]
@@ -244,7 +273,7 @@ class Get_data:
         plt.savefig(f'graphics/chamber_graph/week_graph.png')
 
     def draw_week_graph_t_h(self):
-        df = pd.read_csv(f'df_all.csv')
+        df = pd.read_csv(f'fake_df.csv')
         df = df[['Date&Time', 'temp', 'hum', 'lux']].dropna()
         df['Date&Time'] = pd.to_datetime(df['Date&Time'])
         color_temp = 'r'
@@ -276,7 +305,8 @@ class Get_data:
         plt.savefig(f'graphics/chamber_graph/week_graph_t_h.png')
 
     def draw_week_data(self):
-        df = pd.read_csv('df_all.csv')
+        print('1. run draw_week_data')
+        df = pd.read_csv('fake_df.csv')
 
         df = df[['Date&Time','Time', 'temp', 'hum', 'lux']].dropna()
         # df['Date'] = df['Date&Time'].str.split(' ').str[0]
@@ -297,7 +327,7 @@ class Get_data:
 
         plt.tight_layout()
         # plt.show()
-        plt.savefig(f'graphics/chamber_graph/week_graph.png')
+        plt.savefig(f'../graphics/chamber_graph/week_graph.png')
 
 
 

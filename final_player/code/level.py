@@ -191,7 +191,7 @@ class Level:
 		self.dashboard.have_to_vent = 'off'
 
 	def grh_water_setup(self):
-		tmx_data = load_pygame('data/chamber-sf-map.tmx')
+		tmx_data = load_pygame('../data/chamber-sf-map.tmx')
 
 		print(f'grh_water_setup {self.dashboard.water_data}')
 		if self.dashboard.water_data == 'water_on':

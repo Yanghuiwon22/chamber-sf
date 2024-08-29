@@ -56,6 +56,9 @@ class Get_data:
             # return output
             return [output['day_temp'], output['day_hum'], '--']
 
+        if response.status_code == 404:
+            print('404 error')
+
             # return [output['day_temp'], output['day_hum'], 'None']
         # return {
         #     "day_time": "21:31",
@@ -218,7 +221,7 @@ class Get_data:
             output['lux'] = df['lux'].values[0]
         return [output['temp'], output['hum'], output['lux']]
 
-        df_all.to_csv('df_all.csv')
+        df_all.to_csv('fake_df.csv')
 
     def draw_week_data(self):
         df = pd.read_csv('df_all.csv')
