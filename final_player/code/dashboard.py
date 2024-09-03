@@ -35,14 +35,14 @@ class DashBoard:
         self.get_greenhouse_data = get_data.get_gh_data()
 
         self.livedata_mini_chamber = get_data.livedata_mini_chamber
-
+        # self.livedata_mini_chamber = False
 
         # control
         self.index_light = 0
         self.index_water = 0
         self.index_vent = 0
 
-        self.control_led = ['led_off', 'led_on']
+        self.control_led = ['led_off', 'leed_on']
         self.control_water = ['water_off', 'water_on']
         self.control_vent = ['fan_off', 'fan_on']
 
@@ -89,6 +89,8 @@ class DashBoard:
             self.get_week_data = None
         self.get_graph_week = get_data.draw_week_data()
 
+        self.mini_chamber_graph = get_data.mini_chamber_graph
+
     def setup(self):
         # create the text surfaces
         self.title_surf = []
@@ -117,7 +119,11 @@ class DashBoard:
             self.text_height += 2*self.padding + text_surf.get_height()
 
         for item in self.options_dates:
-            text_surf = self.font.render(item, False, 'black')
+            if not self.livedata_mini_chamber:
+                color = 'red'
+            else:
+                color = 'black'
+            text_surf = self.font.render(item, False, color)
             self.date_surf.append(text_surf)
             self.date_height += 2*self.padding + text_surf.get_height()
 
@@ -368,8 +374,13 @@ class DashBoard:
         self.data_surf = []
         self.data_height = 0
 
-        for item in self.options_data:
-            text_surf = self.font.render(item, False, 'black')
+        for item in [self.options_data['temp'], self.options_data['hum'], self.options_data['lux']]: #----------> 실시간 데이터 출력
+            if not self.livedata_mini_chamber:  # ----------> 실시간 데이터가 아니면 빨간색으로 출력
+                color = 'red'
+            else:
+                color = 'black'
+            text_surf = self.font.render(item, False, color)
+
             self.data_surf.append(text_surf)
             self.data_height = text_surf.get_height() + 2*self.space
         self.total_height += self.data_height
@@ -423,11 +434,7 @@ class DashBoard:
 
 
         if self.player.pos_layer == 'mini_chamber':
-            if not self.livedata_mini_chamber:
-                self.show_entry_updated_time(f'UPDATED TIME : {self.get_data["Date"]} {self.get_data["Time"]}', color='red')
-                self.show_entry_fake(top=self.bg_rect.bottom + self.space)
-            else:
-                self.show_entry_updated_time(f'UPDATED TIME : {self.get_data["Date"]} {self.get_data["Time"]}', color='black')
+
 
             if self.index == 0:
                 for title_index, title_surf in enumerate(self.title_surf):
@@ -452,39 +459,90 @@ class DashBoard:
                     top = self.main_rect.top + (self.main_rect.height / 2 ) + self.ptitle_rect.height + (self.space)*2
                     self.show_entry_btn(btn_img, top)
 
+                if not self.livedata_mini_chamber:
+                    self.show_entry_fake(top=self.bg_rect.bottom + self.space)
+                    self.show_entry_updated_time(f'UPDATED TIME : {self.get_data["Date"]} {self.get_data["Time"]}',
+                                             color='red')
+                else:
+                    self.show_entry_updated_time(f'UPDATED TIME : {self.get_data["Date"]} {self.get_data["Time"]}',
+                                             color='black')
+
             elif self.index == 1:
-                date_surf = self.date_surf[self.date_index]
-                top = self.bg_rect.top + self.space*4
-                self.show_entry_date(date_surf, top)
-
-                try:
-                    file_path = '../graphics/chamber_graph/chamber_t_h.png'
-                except:
+                # 온습도 그래프 표시
+                self.mini_chamber_graph = False
+                if not self.mini_chamber_graph:
                     file_path = '../graphics/chamber_graph/fake_t_h.png'
+                    date_text = '2024-05-23'
+                    date_surf = self.font.render(date_text, False, 'red')
                     top = self.bg_rect.top + self.space * 4
-                    self.show_entry_fake(top)
+                    self.show_entry_date(date_surf, top)
+                else:
+                    file_path = '../graphics/chamber_graph/chamber_t_h.png'
+                    date_text = (datetime.now().date() - timedelta(days=1)).strftime('%Y-%m-%d')
+                    date_surf = self.font.render(date_text, False, 'black')
+                    top = self.bg_rect.top + self.space * 4
+                    self.show_entry_date(date_surf, top)
 
 
+                # 날짜 표시
                 top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 self.show_entry_img(file_path, top)
+
+                if not self.mini_chamber_graph:
+                    self.show_entry_fake(top=self.bg_rect.bottom + self.space)
 
             elif self.index == 2:
-                date_surf = self.date_surf[self.date_index]
-                top = self.bg_rect.top + self.space*4
-                self.show_entry_date(date_surf, top)
+                # 광 그래프 표시
+                self.mini_chamber_graph = False
 
-                file_path = '../graphics/chamber_graph/chamber_lux.png'
+                if not self.mini_chamber_graph:
+                    file_path = '../graphics/chamber_graph/fake_lux.png'
+                    date_text = '2024-05-23'
+                    date_surf = self.font.render(date_text, False, 'red')
+                    top = self.bg_rect.top + self.space * 4
+                    self.show_entry_date(date_surf, top)
+                else:
+                    file_path = '../graphics/chamber_graph/chamber_lux.png'
+                    date_text = (datetime.now().date() - timedelta(days=1)).strftime('%Y-%m-%d')
+                    date_surf = self.font.render(date_text, False, 'black')
+                    top = self.bg_rect.top + self.space * 4
+                    self.show_entry_date(date_surf, top)
+
+                # 날짜 표시
                 top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 self.show_entry_img(file_path, top)
+
+                if not self.mini_chamber_graph:
+                    self.show_entry_fake(top=self.bg_rect.bottom + self.space)
 
             elif self.index == 3:
-                date_surf = self.date_surf[-1]
-                top = self.bg_rect.top + self.space*4
-                self.show_entry_date(date_surf, top)
+                # date_surf = self.date_surf[-1]
+                # top = self.bg_rect.top + self.space*4
+                # self.show_entry_date(date_surf, top)
+                #
+                # file_path = '../graphics/chamber_graph/week_graph_t_h.png'
+                # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
+                # self.show_entry_img(file_path, top)
+                if not self.mini_chamber_graph:
+                    file_path = '../graphics/chamber_graph/fake_lux.png'
+                    date_text = '2024-05-23'
+                    date_surf = self.font.render(date_text, False, 'red')
+                    top = self.bg_rect.top + self.space * 4
+                    self.show_entry_date(date_surf, top)
+                else:
+                    file_path = '../graphics/chamber_graph/chamber_lux.png'
+                    date_text = (datetime.now().date() - timedelta(days=1)).strftime('%Y-%m-%d')
+                    date_surf = self.font.render(date_text, False, 'red')
+                    top = self.bg_rect.top + self.space * 4
+                    self.show_entry_date(date_surf, top)
 
-                file_path = '../graphics/chamber_graph/week_graph_t_h.png'
-                top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
+                    # 날짜 표시
+                top = self.bg_rect.top + self.space * 4 + self.date_rect.height + self.space
                 self.show_entry_img(file_path, top)
+
+                if not self.mini_chamber_graph:
+                    self.show_entry_fake(top=self.bg_rect.bottom + self.space)
+
 
             elif self.index == 4:
                 date_surf = self.date_surf[-1]
@@ -494,6 +552,16 @@ class DashBoard:
                 file_path = '../graphics/chamber_graph/week_graph.png'
                 top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 self.show_entry_img(file_path, top)
+            #
+            # if not self.livedata_mini_chamber:
+            #     self.show_entry_fake(top=self.bg_rect.bottom + self.space)
+            #
+            #     if self.index == 0:
+            #         self.show_entry_updated_time(f'UPDATED TIME : {self.get_data["Date"]} {self.get_data["Time"]}', color='red')
+            #
+            # else:
+            #     if self.index == 0:
+            #         self.show_entry_updated_time(f'UPDATED TIME : {self.get_data["Date"]} {self.get_data["Time"]}', color='black')
 
 
         if self.player.pos_layer == 'greenhouse':
@@ -516,13 +584,10 @@ class DashBoard:
                     self.show_entry_pd(text_surf, top)
 
             elif self.index == 1:
+                # 현재 날짜를 기준으로 -1 일
                 date_surf = self.date_surf[self.date_index]
                 top = self.bg_rect.top + self.space*4
                 self.show_entry_date(date_surf, top)
-
-                # self.chamber_t_h = f'..\graphics\chamber_graph\chamber_t&h.png'
-                # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
-                # self.show_entry_img(self.chamber_t_h, top)
 
             elif self.index == 2:
                 date_surf = self.date_surf[self.date_index]

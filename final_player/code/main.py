@@ -76,4 +76,5 @@ class Game:
 
 if __name__ == '__main__':
 	game = Game()
-	game.show_start_screen()
+	# game.show_start_screen()
+	game.run()

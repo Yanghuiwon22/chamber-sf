@@ -53,6 +53,7 @@ class Level:
 		self.gh_active = False
 
 
+
 		# dashboard
 		self.dashboard = DashBoard(self.player, self.toggle_dashboard, self.get_data)
 		self.dashboard_active = False

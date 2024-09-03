@@ -36,6 +36,7 @@ class Get_data:
         self.chamber_text = {'Time': '--', 'temp' : -99, 'hum' : -99, 'lux': -99}
 
         self.livedata_mini_chamber = False
+        self.mini_chamber_graph = False
 
     # 헤이홈 연구실 데이터 
     def get_lab_data(self):
@@ -195,16 +196,21 @@ class Get_data:
             response = urllib.request.urlopen(url)
 
             if response.getcode() == 200:
-                print('success')
+                self.mini_chamber_graph = True
+                print(f'success {y}')
                 data = response.read()
                 image = Image.open(io.BytesIO(data))
-
-                file_path = f'graphics/chamber_graph/chamber_{y}.png'
-                image.save(file_path)
+                print(image)
+                file_path = f'../graphics/chamber_graph/chamber_{y}.png'
+                print(file_path)
+                image.save(file_path)  # savefig 대신 save 사용
+                print(f'save {y}')
         except:
-            pass
+            self.mini_chamber_graph = False
+
 
     def get_week_data(self):
+        print('get week data run')
         date = datetime.now()
         date = date.date()
 
@@ -223,37 +229,41 @@ class Get_data:
                     df = pd.read_csv(io.StringIO(data))
                     df_all = pd.concat([df_all, df])
                     df_all.reset_index(drop=True)
+                    print(df_all)
 
-            url = 'https://api.thingspeak.com/channels/1999883/feeds.json?api_key=XP1R5CVUPVXTNJT0&'
+            # url = 'https://api.thingspeak.com/channels/1999883/feeds.json?api_key=XP1R5CVUPVXTNJT0&'
+            #
+            # output = {}
+            # response = requests.get(url + 'results=5000')
+            # if response.status_code == 200:
+            #     df = pd.DataFrame(response.json()['feeds'])
+            #     df.rename(columns={'field1': 'temp', 'field2': 'hum', 'field3':'lux'}, inplace=True)
+            #     df.insert(loc=0, column='Time', value=df['created_at'][0].split('T')[1].split('Z')[0])
+            #     df.drop(columns=['created_at','entry_id','field4'], inplace=True)
+            #
+            #     df['Time'] = pd.to_datetime(df['Time']) + pd.Timedelta(hours=9)
+            #     df['Time'] = df['Time'].dt.strftime('%H:%M:%S')
+            #     output['Time'] = df['Time'].values[0]
+            #     output['temp'] = df['temp'].values[0]
+            #     output['hum'] = df['hum'].values[0]
+            #     output['lux'] = df['lux'].values[0]
+            # return [output['temp'], output['hum'], output['lux']]
 
-            output = {}
-            response = requests.get(url + 'results=5000')
-            if response.status_code == 200:
-                df = pd.DataFrame(response.json()['feeds'])
-                df.rename(columns={'field1': 'temp', 'field2': 'hum', 'field3':'lux'}, inplace=True)
-                df.insert(loc=0, column='Time', value=df['created_at'][0].split('T')[1].split('Z')[0])
-                df.drop(columns=['created_at','entry_id','field4'], inplace=True)
-
-                df['Time'] = pd.to_datetime(df['Time']) + pd.Timedelta(hours=9)
-                df['Time'] = df['Time'].dt.strftime('%H:%M:%S')
-                output['Time'] = df['Time'].values[0]
-                output['temp'] = df['temp'].values[0]
-                output['hum'] = df['hum'].values[0]
-                output['lux'] = df['lux'].values[0]
-            return [output['temp'], output['hum'], output['lux']]
-
-            df_all.to_csv('df_all.csv')
+            print('===== before save =====')
+            df_all.to_csv('./df_all.csv')
+            print('===== after save =====')
         except:
             pass
-            # date = datetime.strptime('2024-05-28', '%Y-%m-%d')
-            # date_range = [date - timedelta(days=x) for x in range(7)]
+
 
 
     def draw_week_data(self):
-        df = pd.read_csv('fake_df.csv')
+        try:
+            df = pd.read_csv('df_all.csv')
+        except:
+            df = pd.read_csv('fake_df.csv')
 
         df = df[['Date&Time','Time', 'temp', 'hum', 'lux']].dropna()
-        # df['Date'] = df['Date&Time'].str.split(' ').str[0]
         df['Date&Time'] = pd.to_datetime(df['Date&Time'])
 
         fig, ax1 = plt.subplots(figsize=(10, 6))
@@ -270,7 +280,7 @@ class Get_data:
 
         plt.tight_layout()
         # plt.show()
-        plt.savefig(f'graphics/chamber_graph/week_graph.png')
+        plt.savefig(f'graphics/chamber_graph/week_graph_lux.png')
 
     def draw_week_graph_t_h(self):
         df = pd.read_csv(f'fake_df.csv')
@@ -339,7 +349,7 @@ if __name__ == '__main__':
     data = Get_data()
     # data.get_week_data('2024-05-29')
     # data.draw_week_data()
-    # data.get_chamber_graph('2024-05-28', 't_h')
-    # data.get_chamber_graph('2024-05-28', 'lux')
+    data.get_chamber_graph('2024-05-28', 't_h')
+    data.get_chamber_graph('2024-05-28', 'lux')
     # data.get_chamber_data()
     data.draw_week_graph_t_h()
