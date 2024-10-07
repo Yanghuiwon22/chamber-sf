@@ -16,6 +16,7 @@ import matplotlib.dates as mdates
 import seaborn as sns
 from matplotlib.dates import DateFormatter
 
+import os
 
 class Get_data:
     def __init__(self):
@@ -191,7 +192,7 @@ class Get_data:
 
     def get_chamber_graph(self, date, y):
         print('run get_chamber_graph')
-        url = f"https://raw.githubusercontent.com/Yanghuiwon22/chamber_data/main/output/graph/{date}_{y}.png"
+        url = f"https://raw.githubusercontent.com/Yanghuiwon22/chamber_data/main/outpugraph/{date}_{y}.png"
         try:
             response = urllib.request.urlopen(url)
 
@@ -201,7 +202,7 @@ class Get_data:
                 data = response.read()
                 image = Image.open(io.BytesIO(data))
                 print(image)
-                file_path = f'../graphics/chamber_graph/chamber_{y}.png'
+                file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/chamber_{y}.png')
                 print(file_path)
                 image.save(file_path)  # savefig 대신 save 사용
                 print(f'save {y}')
@@ -259,9 +260,9 @@ class Get_data:
 
     def draw_week_data(self):
         try:
-            df = pd.read_csv('df_all.csv')
+            df = pd.read_csv('./df_all.csv')
         except:
-            df = pd.read_csv('fake_df.csv')
+            df = pd.read_csv('./fake_df.csv')
 
         df = df[['Date&Time','Time', 'temp', 'hum', 'lux']].dropna()
         df['Date&Time'] = pd.to_datetime(df['Date&Time'])
@@ -280,10 +281,10 @@ class Get_data:
 
         plt.tight_layout()
         # plt.show()
-        plt.savefig(f'graphics/chamber_graph/week_graph_lux.png')
+        plt.savefig(os.path.join(ALL_PATH, f'graphics/chamber_graph/week_graph_lux.png'))
 
     def draw_week_graph_t_h(self):
-        df = pd.read_csv(f'fake_df.csv')
+        df = pd.read_csv(os.path.join(ALL_PATH, 'fake_df.csv'))
         df = df[['Date&Time', 'temp', 'hum', 'lux']].dropna()
         df['Date&Time'] = pd.to_datetime(df['Date&Time'])
         color_temp = 'r'
@@ -312,11 +313,11 @@ class Get_data:
         ax1.legend(lines, labels, loc='upper right')
 
         plt.tight_layout()
-        plt.savefig(f'graphics/chamber_graph/week_graph_t_h.png')
+        plt.savefig(os.path.join(ALL_PATH, f'graphics/chamber_graph/week_graph_t_h.png'))
 
     def draw_week_data(self):
         print('1. run draw_week_data')
-        df = pd.read_csv('fake_df.csv')
+        df = pd.read_csv('C:\code\chamber-sf\\final_player\code\\fake_df.csv')
 
         df = df[['Date&Time','Time', 'temp', 'hum', 'lux']].dropna()
         # df['Date'] = df['Date&Time'].str.split(' ').str[0]
@@ -337,19 +338,19 @@ class Get_data:
 
         plt.tight_layout()
         # plt.show()
-        plt.savefig(f'../graphics/chamber_graph/week_graph.png')
+        plt.savefig(os.path.join(ALL_PATH, f'graphics/chamber_graph/week_graph.png'))
 
 
 
 
 
 
-
-if __name__ == '__main__':
-    data = Get_data()
-    # data.get_week_data('2024-05-29')
-    # data.draw_week_data()
-    data.get_chamber_graph('2024-05-28', 't_h')
-    data.get_chamber_graph('2024-05-28', 'lux')
-    # data.get_chamber_data()
-    data.draw_week_graph_t_h()
+#
+# if __name__ == '__main__':
+#     data = Get_data()
+#     # data.get_week_data('2024-05-29')
+#     # data.draw_week_data()
+#     data.get_chamber_graph('2024-05-28', 't_h')
+#     data.get_chamber_graph('2024-05-28', 'lux')
+#     # data.get_chamber_data()
+#     data.draw_week_graph_t_h()

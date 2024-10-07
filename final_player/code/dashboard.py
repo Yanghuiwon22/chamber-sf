@@ -7,7 +7,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-
+import os
 
 
 class DashBoard:
@@ -18,7 +18,7 @@ class DashBoard:
         self.player = player
         self.toggle_dashboard = toggle_dashboard
         self.display_surface = pygame.display.get_surface()
-        self.font = pygame.font.Font('../font/LycheeSoda.ttf', 30)
+        self.font = pygame.font.Font(os.path.join(ALL_PATH, 'font/LycheeSoda.ttf'), 30)
 
         # options
         self.width = 600
@@ -52,8 +52,8 @@ class DashBoard:
         self.have_to_vent = 'off'
         self.have_to_water = 'off'
 
-        on_button = '../graphics/edit/on_button.png'
-        off_button = '../graphics/edit/off_button.png'
+        on_button = os.path.join(ALL_PATH, 'graphics/edit/on_button.png')
+        off_button = os.path.join(ALL_PATH, 'graphics/edit/off_button.png')
         self.control_status = [off_button, on_button]
 
         # entries
@@ -428,9 +428,9 @@ class DashBoard:
         self.get_grh_data()
         self.get_lab208_data()
 
-        self.show_entry_bg('../graphics/edit/monitor.png')
+        self.show_entry_bg(os.path.join(ALL_PATH, 'graphics/edit/monitor.png'))
         pygame.draw.rect(self.display_surface, 'white', self.bg_rect)
-        self.show_entry_bg('../graphics/edit/monitor.png')
+        self.show_entry_bg(os.path.join(ALL_PATH, 'graphics/edit/monitor.png'))
 
 
         if self.player.pos_layer == 'mini_chamber':
@@ -471,13 +471,13 @@ class DashBoard:
                 # 온습도 그래프 표시
                 self.mini_chamber_graph = False
                 if not self.mini_chamber_graph:
-                    file_path = '../graphics/chamber_graph/fake_t_h.png'
+                    file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/fake_t_h.png')
                     date_text = '2024-05-23'
                     date_surf = self.font.render(date_text, False, 'red')
                     top = self.bg_rect.top + self.space * 4
                     self.show_entry_date(date_surf, top)
                 else:
-                    file_path = '../graphics/chamber_graph/chamber_t_h.png'
+                    file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/chamber_t_h.png')
                     date_text = (datetime.now().date() - timedelta(days=1)).strftime('%Y-%m-%d')
                     date_surf = self.font.render(date_text, False, 'black')
                     top = self.bg_rect.top + self.space * 4
@@ -496,13 +496,13 @@ class DashBoard:
                 self.mini_chamber_graph = False
 
                 if not self.mini_chamber_graph:
-                    file_path = '../graphics/chamber_graph/fake_lux.png'
+                    file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/fake_lux.png')
                     date_text = '2024-05-23'
                     date_surf = self.font.render(date_text, False, 'red')
                     top = self.bg_rect.top + self.space * 4
                     self.show_entry_date(date_surf, top)
                 else:
-                    file_path = '../graphics/chamber_graph/chamber_lux.png'
+                    file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/chamber_lux.png')
                     date_text = (datetime.now().date() - timedelta(days=1)).strftime('%Y-%m-%d')
                     date_surf = self.font.render(date_text, False, 'black')
                     top = self.bg_rect.top + self.space * 4
@@ -524,13 +524,13 @@ class DashBoard:
                 # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 # self.show_entry_img(file_path, top)
                 if not self.mini_chamber_graph:
-                    file_path = '../graphics/chamber_graph/fake_lux.png'
+                    file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/fake_lux.png')
                     date_text = '2024-05-23'
                     date_surf = self.font.render(date_text, False, 'red')
                     top = self.bg_rect.top + self.space * 4
                     self.show_entry_date(date_surf, top)
                 else:
-                    file_path = '../graphics/chamber_graph/chamber_lux.png'
+                    file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/chamber_lux.png')
                     date_text = (datetime.now().date() - timedelta(days=1)).strftime('%Y-%m-%d')
                     date_surf = self.font.render(date_text, False, 'red')
                     top = self.bg_rect.top + self.space * 4
@@ -549,7 +549,7 @@ class DashBoard:
                 top = self.bg_rect.top + self.space*4
                 self.show_entry_date(date_surf, top)
 
-                file_path = '../graphics/chamber_graph/week_graph.png'
+                file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/week_graph.png')
                 top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 self.show_entry_img(file_path, top)
             #

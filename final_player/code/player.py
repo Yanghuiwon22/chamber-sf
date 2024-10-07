@@ -4,6 +4,7 @@ from support import *
 from timer import Timer
 from realtime_data import Get_data
 from transition import Transition
+import os
 
 
 class Player(pygame.sprite.Sprite):
@@ -133,7 +134,7 @@ class Player(pygame.sprite.Sprite):
 						   'right_water':[],'left_water':[],'up_water':[],'down_water':[]}
 
 		for animation in self.animations.keys():
-			full_path = '../graphics/character/' + animation
+			full_path = os.path.join(ALL_PATH, 'graphics/character/') + animation
 			self.animations[animation] = import_folder(full_path)
 
 	def animate(self,dt):

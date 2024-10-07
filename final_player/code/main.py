@@ -4,7 +4,25 @@ from level import Level
 from player import *
 from pygame import joystick
 
+import subprocess
+import os
 
+
+# script_path = os.path.join(os.path.dirname(__file__),  'main.py')
+# subprocess.run(['python', script_path])
+
+# if getattr(sys, 'frozen', False):
+#     base_path = sys._MEIPASS
+# else:
+#     base_path = os.path.dirname(__file__)
+
+
+
+
+subprocess.run(['python', ALL_PATH])
+
+
+# subprocess.run(['python', ALL_PATH])
 class Game:
 	def __init__(self):
 		pygame.init()

@@ -12,6 +12,8 @@ from random import randint
 from menu import Menu
 from dashboard import DashBoard
 from realtime_data import Get_data
+import os
+
 
 class Level:
 	def __init__(self, game):
@@ -31,7 +33,10 @@ class Level:
 		self.all_sprites_greenhouse = CameraGroup()
 		self.all_sprites_map = CameraGroup()
 
-		self.font = pygame.font.Font('../font/LycheeSoda.ttf', 30)
+
+		# self.font = pygame.font.Font('./font/LycheeSoda.ttf', 30)
+		self.font = pygame.font.Font(os.path.join(ALL_PATH, 'font/LycheeSoda.ttf'), 30)
+
 
 		self.soil_layer = SoilLayer(self.all_sprites_map, self.collision_sprites)
 		self.setup()
@@ -69,13 +74,13 @@ class Level:
 
 
 	def setup(self):
-		tmx_data = load_pygame('../data/chamber-sf-map.tmx')
+		tmx_data = load_pygame(os.path.join(ALL_PATH, 'data/chamber-sf-map.tmx'))
 
 		# greenhouse  -----> 메인 맵에서 온실 사진
 		for x, y, surf in tmx_data.get_layer_by_name('greenhouse').tiles():
 			Generic(
 				pos = (x * TILE_SIZE, y * TILE_SIZE - 366 + 64),
-				surf = pygame.image.load('../graphics/environment/Greenhouse.png'),
+				surf = pygame.image.load(os.path.join(ALL_PATH, 'graphics/environment/Greenhouse.png')),
 				groups = self.all_sprites_map
 			)
 
@@ -83,8 +88,8 @@ class Level:
 		for x, y, surf in tmx_data.get_layer_by_name('Fence').tiles():
 			Generic((x * TILE_SIZE,y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
 
-		# water 
-		water_frames = import_folder('../graphics/water')
+		# water
+		water_frames = import_folder(os.path.join(ALL_PATH, os.path.join(ALL_PATH, 'graphics/water')))
 		for x, y, surf in tmx_data.get_layer_by_name('Water').tiles():
 			Water((x * TILE_SIZE,y * TILE_SIZE), water_frames, self.all_sprites_map)
 
@@ -170,12 +175,12 @@ class Level:
 
 		Generic(
 			pos = (0,0),
-			surf = pygame.image.load('../graphics/world/chamber-sf-map.png').convert_alpha(),  # ----> 배경 화면 사진
+			surf = pygame.image.load(os.path.join(ALL_PATH, 'graphics/world/chamber-sf-map.png')).convert_alpha(),  # ----> 배경 화면 사진
 			groups = self.all_sprites_map,
 			z = LAYERS['ground'])
 
 	def grh_setup(self):
-		tmx_data = load_pygame('../data/chamber-sf-map.tmx')
+		tmx_data = load_pygame(os.path.join(ALL_PATH, 'data/chamber-sf-map.tmx'))
 
 		if self.dashboard.vent_data == 'fan_on':
 			for x,y,surf in tmx_data.get_layer_by_name('Greenhouse Status2').tiles():
@@ -192,7 +197,7 @@ class Level:
 		self.dashboard.have_to_vent = 'off'
 
 	def grh_water_setup(self):
-		tmx_data = load_pygame('../data/chamber-sf-map.tmx')
+		tmx_data = load_pygame(os.path.join(ALL_PATH, 'data/chamber-sf-map.tmx'))
 
 		print(f'grh_water_setup {self.dashboard.water_data}')
 		if self.dashboard.water_data == 'water_on':

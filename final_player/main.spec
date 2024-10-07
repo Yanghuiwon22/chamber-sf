@@ -3,7 +3,7 @@
 
 a = Analysis(
     ['code\\main.py'],
-    pathex=[],
+    pathex=['venv\\Lib\\site-packages'],
     binaries=[],
     datas=[],
     hiddenimports=['numpy', 'pygame'],

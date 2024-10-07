@@ -1,8 +1,17 @@
 from pygame.math import Vector2
 # screen
+import sys
+
 SCREEN_WIDTH = 1250
 SCREEN_HEIGHT = 720
 TILE_SIZE = 64
+
+
+if getattr(sys, 'frozen', False):
+	ALL_PATH = sys._MEIPASS
+else:
+	ALL_PATH = './'
+
 
 # overlay positions 
 OVERLAY_POSITIONS = {

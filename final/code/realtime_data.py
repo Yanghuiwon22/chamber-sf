@@ -308,11 +308,11 @@ class Get_data:
 
 
 
-if __name__ == '__main__':
-    data = Get_data()
-    # data.get_week_data('2024-05-29')
-    # data.draw_week_data()
-    # data.get_chamber_graph('2024-05-28', 't_h')
-    # data.get_chamber_graph('2024-05-28', 'lux')
-    # data.get_chamber_data()
-    data.draw_week_graph_t_h()
+# if __name__ == '__main__':
+    # data = Get_data()
+    # # data.get_week_data('2024-05-29')
+    # # data.draw_week_data()
+    # # data.get_chamber_graph('2024-05-28', 't_h')
+    # # data.get_chamber_graph('2024-05-28', 'lux')
+    # # data.get_chamber_data()
+    # data.draw_week_graph_t_h()

@@ -4,6 +4,8 @@ from pytmx.util_pygame import load_pygame
 from support import *
 from random import choice
 
+import os
+
 class SoilTile(pygame.sprite.Sprite):
 	def __init__(self, pos, surf, groups):
 		super().__init__(groups)
@@ -66,29 +68,29 @@ class SoilLayer:
 		self.plant_sprites = pygame.sprite.Group()
 
 		# graphics
-		self.soil_surfs = import_folder_dict('../graphics/soil/')
-		self.water_surfs = import_folder('../graphics/soil_water')
+		self.soil_surfs = import_folder_dict(os.path.join(ALL_PATH, 'graphics/soil/'))
+		self.water_surfs = import_folder(os.path.join(ALL_PATH, 'graphics/soil_water'))
 
 		self.create_soil_grid()
 		self.create_hit_rects()
 
 		# sounds
 		try:
-			self.hoe_sound = pygame.mixer.Sound('../audio/hoe.wav')
+			self.hoe_sound = pygame.mixer.Sound(os.path.join(ALL_PATH, 'audio/hoe.wav'))
 			self.hoe_sound.set_volume(0.1)
 
-			self.plant_sound = pygame.mixer.Sound('../audio/plant.wav')
+			self.plant_sound = pygame.mixer.Sound(os.path.join(ALL_PATH, 'audio/plant.wav'))
 			self.plant_sound.set_volume(0.2)
 		except:
 			self.hoe_sound = None
 			self.plant_sound = None
 
 	def create_soil_grid(self):
-		ground = pygame.image.load('../graphics/world/chamber-sf-map.png')
+		ground = pygame.image.load(os.path.join(ALL_PATH, 'graphics/world/chamber-sf-map.png'))
 		h_tiles, v_tiles = ground.get_width() // TILE_SIZE, ground.get_height() // TILE_SIZE
 		
 		self.grid = [[[] for col in range(h_tiles)] for row in range(v_tiles)]
-		for x, y, _ in load_pygame('../data/chamber-sf-map.tmx').get_layer_by_name('Farmable').tiles():
+		for x, y, _ in load_pygame(os.path.join(ALL_PATH, 'data/chamber-sf-map.tmx')).get_layer_by_name('Farmable').tiles():
 			self.grid[y][x].append('F')
 
 	def create_hit_rects(self):
