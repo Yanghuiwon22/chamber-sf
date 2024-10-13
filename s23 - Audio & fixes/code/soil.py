@@ -67,7 +67,6 @@ class SoilLayer:
 
 		# graphics
 		self.soil_surfs = import_folder_dict('../graphics/soil/')
-		print(self.soil_surfs)
 		self.water_surfs = import_folder('../graphics/soil_water')
 
 		self.create_soil_grid()
