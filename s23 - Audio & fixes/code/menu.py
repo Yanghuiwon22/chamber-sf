@@ -39,7 +39,6 @@ class Menu:
 		self.total_height = 0
 
 		for item in self.options:
-			print(self.font)
 			text_surf = self.font.render(item, False, 'Black')
 			self.text_surfs.append(text_surf)
 			self.total_height += text_surf.get_height() + (self.padding * 2)

@@ -73,11 +73,14 @@ class SoilLayer:
 		self.create_hit_rects()
 
 		# sounds
-		self.hoe_sound = pygame.mixer.Sound('../audio/hoe.wav')
-		self.hoe_sound.set_volume(0.1)
+		try:
+			self.hoe_sound = pygame.mixer.Sound('../audio/hoe.wav')
+			self.hoe_sound.set_volume(0.1)
 
-		self.plant_sound = pygame.mixer.Sound('../audio/plant.wav') 
-		self.plant_sound.set_volume(0.2)
+			self.plant_sound = pygame.mixer.Sound('../audio/plant.wav')
+			self.plant_sound.set_volume(0.2)
+
+		except: pass
 
 	def create_soil_grid(self):
 		ground = pygame.image.load('../graphics/world/ground.png')

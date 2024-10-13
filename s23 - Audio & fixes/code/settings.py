@@ -4,6 +4,8 @@ SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 TILE_SIZE = 64
 FONT_NAME = 'LycheeSoda.ttf'
+ALL_PATH = '../'
+
 # overlay positions 
 OVERLAY_POSITIONS = {
 	'tool' : (40, SCREEN_HEIGHT - 15), 

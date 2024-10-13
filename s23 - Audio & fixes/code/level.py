@@ -1,4 +1,6 @@
-import pygame 
+import os.path
+
+import pygame
 from settings import *
 from player import Player
 from overlay import Overlay
@@ -39,71 +41,73 @@ class Level:
 		self.shop_active = False
 
 		# music
-		self.success = pygame.mixer.Sound('../audio/success.wav')
-		self.success.set_volume(0.3)
-		self.music = pygame.mixer.Sound('../audio/music.mp3')
-		self.music.play(loops = -1)
+		try:
+			self.success = pygame.mixer.Sound('../audio/success.wav')
+			self.success.set_volume(0.3)
+			self.music = pygame.mixer.Sound('../audio/music.mp3')
+			self.music.play(loops = -1)
+		except: pass
 
 	def setup(self):
-		tmx_data = load_pygame('../data/map.tmx')
+		tmx_data = load_pygame('../data/greenhouse_map.tmx')
 
 		# house 
-		for layer in ['HouseFloor', 'HouseFurnitureBottom']:
-			for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
-				Generic((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites, LAYERS['house bottom'])
-
-		for layer in ['HouseWalls', 'HouseFurnitureTop']:
-			for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
-				Generic((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites)
-
-		# Fence
-		for x, y, surf in tmx_data.get_layer_by_name('Fence').tiles():
-			Generic((x * TILE_SIZE,y * TILE_SIZE), surf, [self.all_sprites, self.collision_sprites])
-
-		# water 
-		water_frames = import_folder('../graphics/water')
-		for x, y, surf in tmx_data.get_layer_by_name('Water').tiles():
-			Water((x * TILE_SIZE,y * TILE_SIZE), water_frames, self.all_sprites)
-
-		# trees 
-		for obj in tmx_data.get_layer_by_name('Trees'):
-			Tree(
-				pos = (obj.x, obj.y), 
-				surf = obj.image, 
-				groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], 
-				name = obj.name,
-				player_add = self.player_add)
-
-		# wildflowers 
-		for obj in tmx_data.get_layer_by_name('Decoration'):
-			WildFlower((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites])
-
-		# collion tiles
-		for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
-			Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
-
-		# Player 
+		# for layer in ['HouseFloor', 'HouseFurnitureBottom']:
+		# 	for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
+		# 		Generic((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites, LAYERS['house bottom'])
+		#
+		# for layer in ['HouseWalls', 'HouseFurnitureTop']:
+		# 	for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
+		# 		Generic((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites)
+		#
+		# # Fence
+		# for x, y, surf in tmx_data.get_layer_by_name('Fence').tiles():
+		# 	Generic((x * TILE_SIZE,y * TILE_SIZE), surf, [self.all_sprites, self.collision_sprites])
+		#
+		# # water
+		# water_frames = import_folder('../graphics/water')
+		# for x, y, surf in tmx_data.get_layer_by_name('Water').tiles():
+		# 	Water((x * TILE_SIZE,y * TILE_SIZE), water_frames, self.all_sprites)
+		#
+		# # trees
+		# for obj in tmx_data.get_layer_by_name('Trees'):
+		# 	Tree(
+		# 		pos = (obj.x, obj.y),
+		# 		surf = obj.image,
+		# 		groups = [self.all_sprites, self.collision_sprites, self.tree_sprites],
+		# 		name = obj.name,
+		# 		player_add = self.player_add)
+		#
+		# # wildflowers
+		# for obj in tmx_data.get_layer_by_name('Decoration'):
+		# 	WildFlower((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites])
+		#
+		# # collion tiles
+		# for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
+		# 	Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
+		#
+		# Player
 		for obj in tmx_data.get_layer_by_name('Player'):
 			if obj.name == 'Start':
 				self.player = Player(
-					pos = (obj.x,obj.y), 
-					group = self.all_sprites, 
+					pos = (obj.x,obj.y),
+					group = self.all_sprites,
 					collision_sprites = self.collision_sprites,
 					tree_sprites = self.tree_sprites,
 					interaction = self.interaction_sprites,
 					# soil_layer = self.soil_layer,
 					toggle_shop = self.toggle_shop)
-			
+
 			if obj.name == 'Bed':
 				Interaction((obj.x,obj.y), (obj.width,obj.height), self.interaction_sprites, obj.name)
 
 			if obj.name == 'Trader':
 				Interaction((obj.x,obj.y), (obj.width,obj.height), self.interaction_sprites, obj.name)
 
-
+		#
 		Generic(
 			pos = (0,0),
-			surf = pygame.image.load('../graphics/world/ground.png').convert_alpha(),
+			surf = pygame.image.load(os.path.join(ALL_PATH, 'data/greenhouse_map.png')).convert_alpha(),
 			groups = self.all_sprites,
 			z = LAYERS['ground'])
 

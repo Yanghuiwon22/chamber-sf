@@ -100,7 +100,6 @@ class Game:
 					elif event.key == pygame.K_RETURN:
 						result = self.cur.execute("SELECT * FROM User;")
 						for row in result:
-							print(row)
 							if row[1] == id and row[2] == password:
 								self.run()
 							else:
