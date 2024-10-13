@@ -149,11 +149,11 @@
             "scaleInDock": 1
         },
         "data/basemap.tmx": {
-            "scale": 0.33,
+            "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1596.969696969697,
-                "y": 356.06060606060606
+                "x": 946.6666666666665,
+                "y": 706.6666666666667
             }
         },
         "data/basemap.tmx#CP_V1.0.4": {
