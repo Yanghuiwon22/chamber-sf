@@ -4,13 +4,16 @@ import sys
 
 SCREEN_WIDTH = 1250
 SCREEN_HEIGHT = 720
-TILE_SIZE = 64
+TILE_SIZE = 16
+
+OFFSET_X = 0  # 필요에 따라 조정
+OFFSET_Y = 0  # 필요에 따라 조정
 
 
 if getattr(sys, 'frozen', False):
 	ALL_PATH = sys._MEIPASS
 else:
-	ALL_PATH = './'
+	ALL_PATH = '../'
 
 
 # overlay positions 

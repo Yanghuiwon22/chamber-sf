@@ -70,8 +70,8 @@ class Level:
 		# self.text_save_rect = self.text_save.get_rect(
 		# 	topleft=(SCREEN_WIDTH - 30 - self.text_save.get_width(), SCREEN_HEIGHT - 30 - self.text_save.get_height()))
 
-		self.edit = Edit()
-		self.edit_active = False
+		# self.edit = Edit()
+		# self.edit_active = False
 
 	def setup(self):
 		tmx_data = load_pygame('../data/chamber-sf-map.tmx')

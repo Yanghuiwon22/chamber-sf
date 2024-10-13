@@ -74,43 +74,55 @@ class Level:
 
 
 	def setup(self):
-		tmx_data = load_pygame(os.path.join(ALL_PATH, 'data/chamber-sf-map.tmx'))
+		tmx_data = load_pygame(os.path.join(ALL_PATH, 'data/greenhouse_map.tmx'))
 
-		# greenhouse  -----> 메인 맵에서 온실 사진
-		for x, y, surf in tmx_data.get_layer_by_name('greenhouse').tiles():
-			Generic(
-				pos = (x * TILE_SIZE, y * TILE_SIZE - 366 + 64),
-				surf = pygame.image.load(os.path.join(ALL_PATH, 'graphics/environment/Greenhouse.png')),
-				groups = self.all_sprites_map
-			)
+		# # 맵 로드하기
+		# for x, y, surf in tmx_data.get_layer_by_name('Tree').tiles():
+		# 	print(surf)
+		# 	Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
 
-		# Fence
-		for x, y, surf in tmx_data.get_layer_by_name('Fence').tiles():
-			Generic((x * TILE_SIZE,y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
+		# for x, y, surf in tmx_data.get_layer_by_name('Tile Layer 14').tiles():
+ 		# 	Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
 
-		# water
-		water_frames = import_folder(os.path.join(ALL_PATH, os.path.join(ALL_PATH, 'graphics/water')))
-		for x, y, surf in tmx_data.get_layer_by_name('Water').tiles():
-			Water((x * TILE_SIZE,y * TILE_SIZE), water_frames, self.all_sprites_map)
-
-		# trees 
-		for obj in tmx_data.get_layer_by_name('Trees'):
-			Tree(
-				pos = (obj.x, obj.y), 
-				surf = obj.image, 
-				groups = [self.all_sprites_map, self.collision_sprites, self.tree_sprites],
-				name = obj.name,
-				player_add = self.player_add)
-
-		# wildflowers 
-		for obj in tmx_data.get_layer_by_name('Decoration'):
-			WildFlower((obj.x, obj.y), obj.image, [self.all_sprites_map, self.collision_sprites])
+		# for x, y, surf in tmx_data.get_layer_by_name('lake').tiles():
+		# 	Generic((x * TILE_SIZE,y * TILE_SIZE), surf, [self.all_sprites_map])
 
 
-		# collion tiles
-		for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
-			Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
-
+		# # greenhouse  -----> 메인 맵에서 온실 사진
+		# for x, y, surf in tmx_data.get_layer_by_name('greenhouse').tiles():
+		# 	Generic(
+		# 		pos = (x * TILE_SIZE, y * TILE_SIZE - 366 + 64),
+		# 		surf = pygame.image.load(os.path.join(ALL_PATH, 'graphics/environment/Greenhouse.png')),
+		# 		groups = self.all_sprites_map
+		# 	)
+		#
+		# # Fence
+		# for x, y, surf in tmx_data.get_layer_by_name('Fence').tiles():
+		# 	Generic((x * TILE_SIZE,y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
+		#
+		# # water
+		# water_frames = import_folder(os.path.join(ALL_PATH, os.path.join(ALL_PATH, 'graphics/water')))
+		# for x, y, surf in tmx_data.get_layer_by_name('Water').tiles():
+		# 	Water((x * TILE_SIZE,y * TILE_SIZE), water_frames, self.all_sprites_map)
+		#
+		# # trees
+		# for obj in tmx_data.get_layer_by_name('Trees'):
+		# 	Tree(
+		# 		pos = (obj.x, obj.y),
+		# 		surf = obj.image,
+		# 		groups = [self.all_sprites_map, self.collision_sprites, self.tree_sprites],
+		# 		name = obj.name,
+		# 		player_add = self.player_add)
+		#
+		# # wildflowers
+		# for obj in tmx_data.get_layer_by_name('Decoration'):
+		# 	WildFlower((obj.x, obj.y), obj.image, [self.all_sprites_map, self.collision_sprites])
+		#
+		#
+		# # collion tiles
+		# for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
+		# 	Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
+		#
 		# Player
 		for obj in tmx_data.get_layer_by_name('Player'):
 			if obj.name == 'Start':
@@ -125,58 +137,62 @@ class Level:
 					toggle_dashboard=self.toggle_dashboard
 				)
 
-			if obj.name == 'Trader':
-				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		# for x, y, surf in tmx_data.get_layer_by_name('floor').tiles():
+		# 	Generic((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites_map)
 
-			if obj.name == 'Enter_gh1':
-				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-
-			if obj.name == 'Enter_gh2':
-				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-
-			if obj.name == 'Enter_gh3':
-				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-
-			if obj.name == 'gh1_start':
-				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-
-			if obj.name == 'gh2_start':
-				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-
-			if obj.name == 'gh3_start':
-				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-
-			if obj.name == 'gh1_out':
-				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-
-			if obj.name == 'gh2_out':
-				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-
-			if obj.name == 'gh3_out':
-				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-
-			if obj.name == 'dashboard1':
-				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-
-			if obj.name == 'dashboard2':
-				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-
-			if obj.name == 'dashboard3':
-				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-
-
-		# collion tilese
-		for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
-			Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
-
-        # wall
-		for x, y, surf in tmx_data.get_layer_by_name('wall').tiles():
-			Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
-
+		#
+		# 	if obj.name == 'Trader':
+		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		#
+		# 	if obj.name == 'Enter_gh1':
+		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		#
+		# 	if obj.name == 'Enter_gh2':
+		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		#
+		# 	if obj.name == 'Enter_gh3':
+		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		#
+		# 	if obj.name == 'gh1_start':
+		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		#
+		# 	if obj.name == 'gh2_start':
+		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		#
+		# 	if obj.name == 'gh3_start':
+		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		#
+		# 	if obj.name == 'gh1_out':
+		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		#
+		# 	if obj.name == 'gh2_out':
+		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		#
+		# 	if obj.name == 'gh3_out':
+		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		#
+		# 	if obj.name == 'dashboard1':
+		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		#
+		# 	if obj.name == 'dashboard2':
+		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		#
+		# 	if obj.name == 'dashboard3':
+		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+		#
+		#
+		# # collion tilese
+		# for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
+		# 	Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
+		#
+        # # wall
+		# for x, y, surf in tmx_data.get_layer_by_name('wall').tiles():
+		# 	Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
+		#
 		Generic(
-			pos = (0,0),
-			surf = pygame.image.load(os.path.join(ALL_PATH, 'graphics/world/chamber-sf-map.png')).convert_alpha(),  # ----> 배경 화면 사진
-			groups = self.all_sprites_map,
+			pos = (0, 0),
+			surf = pygame.image.load(os.path.join(ALL_PATH, 'data/greenhouse_map.png')).convert_alpha(),  # ----> 배경 화면 사진
+			groups = self.all_sprites,
 			z = LAYERS['ground'])
 
 	def grh_setup(self):

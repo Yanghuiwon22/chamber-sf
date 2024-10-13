@@ -80,7 +80,7 @@ class Game:
 				if event.type == pygame.KEYUP:
 					waiting = False
 					self.run()
-				elif event.type == pygame.JOYBUTTONDOWN:
+				elif event.type0  == pygame.JOYBUTTONDOWN:
 					waiting = False
 					self.run()
 

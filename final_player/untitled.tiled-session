@@ -1,0 +1,233 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "data/basemap.tmx",
+    "expandedProjectPaths": [
+        ".",
+        "data/Tilesets",
+        "data"
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/code/chamber_sf/final/data/Tilesets/BD001.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "C:/code/chamber_sf/final/data/Tilesets/CP_V1.0.4.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/code/chamber_sf/final/data/Tilesets/Grass.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/code/chamber_sf/final/data/Tilesets/Objects.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/code/chamber_sf/final/data/Tilesets/Paths.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/code/chamber_sf/final/data/Tilesets/edit.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/code/chamber_sf/final/data/Tilesets/galletcity.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/code/chamber_sf/final/data/Tilesets/galletcity_tiles.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/code/chamber_sf/final/data/Tilesets/greenhouse.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/code/chamber_sf/final/data/Tilesets/tile.tsx": {
+            "scaleInDock": 1
+        },
+        "data/Tilesets/BD001.tsx": {
+            "scaleInDock": 1
+        },
+        "data/Tilesets/CP_V1.0.4.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "data/Tilesets/City_Transparent.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "data/Tilesets/Crops.tsx": {
+            "scaleInDock": 1
+        },
+        "data/Tilesets/Fences.tsx": {
+            "scaleInDock": 1
+        },
+        "data/Tilesets/Grass.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "data/Tilesets/Hills.tsx": {
+            "scaleInDock": 1
+        },
+        "data/Tilesets/House Decoration.tsx": {
+            "scaleInDock": 1
+        },
+        "data/Tilesets/House.tsx": {
+            "scaleInDock": 1
+        },
+        "data/Tilesets/Objects.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "data/Tilesets/Paths.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "data/Tilesets/Plant Decoration.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "data/Tilesets/Tilled_Dirt_Wide.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "data/Tilesets/Water.tsx": {
+            "scaleInDock": 1
+        },
+        "data/Tilesets/[A]Grass1-Dirt1_pipo.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "data/Tilesets/[A]Grass1-Dirt3_pipo.tsx": {
+            "scaleInDock": 1
+        },
+        "data/Tilesets/[A]LongGrass_pipo.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "data/Tilesets/building.tsx": {
+            "scaleInDock": 1
+        },
+        "data/Tilesets/building_64.tsx": {
+            "scaleInDock": 1
+        },
+        "data/Tilesets/day buildings front.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "data/Tilesets/edit.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "data/Tilesets/galletcity.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "data/Tilesets/galletcity_tiles.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "data/Tilesets/greenhouse.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "data/Tilesets/interaction.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "data/Tilesets/test_bush.tsx": {
+            "dynamicWrapping": true,
+            "scaleInEditor": 0.12
+        },
+        "data/Tilesets/tile.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "data/basemap.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1596.969696969697,
+                "y": 356.06060606060606
+            }
+        },
+        "data/basemap.tmx#CP_V1.0.4": {
+            "scaleInDock": 1
+        },
+        "data/basemap.tmx#Plant Decoration": {
+            "scaleInDock": 1
+        },
+        "data/chamber-sf-map.tmx": {
+            "expandedObjectLayers": [
+                12
+            ],
+            "scale": 0.33,
+            "selectedLayer": 7,
+            "viewCenter": {
+                "x": 960.6060606060607,
+                "y": 4189.39393939394
+            }
+        },
+        "data/greenhouse_map.tmx": {
+            "scale": 2,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1399,
+                "y": 914.25
+            }
+        },
+        "data/greenhouse_map.tmx#Plant Decoration": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "data/test.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1522,
+                "y": 1356.5
+            }
+        },
+        "data/test2.tmx": {
+            "scale": 1.7396875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 240.56044548230642,
+                "y": 160.3736303215376
+            }
+        }
+    },
+    "last.externalTilesetPath": "C:/code/chamber-sf/final_player/data/Tilesets",
+    "last.imagePath": "C:/code/chamber-sf/final_player/graphics/objects",
+    "map.height": 100,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 100,
+    "openFiles": [
+        "data/basemap.tmx"
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "data/Tilesets/test_bush.tsx",
+        "data/greenhouse_map.tmx",
+        "data/basemap.tmx",
+        "data/chamber-sf-map.tmx",
+        "data/Tilesets/Plant Decoration.tsx",
+        "data/Tilesets/Tilled_Dirt_Wide.tsx",
+        "data/Tilesets/CP_V1.0.4.tsx",
+        "data/Tilesets/day buildings front.tsx",
+        "data/Tilesets/[A]Grass1-Dirt1_pipo.tsx",
+        "data/test2.tmx",
+        "data/test.tmx"
+    ],
+    "resizeMap.removeObjects": false,
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
+}
