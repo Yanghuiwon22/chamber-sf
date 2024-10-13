@@ -9,6 +9,9 @@ TILE_SIZE = 16
 OFFSET_X = 0  # 필요에 따라 조정
 OFFSET_Y = 0  # 필요에 따라 조정
 
+LAB_ENTER = (2230, 605)
+
+
 
 if getattr(sys, 'frozen', False):
 	ALL_PATH = sys._MEIPASS
@@ -95,9 +98,9 @@ LIGHTBLUE = (0, 155, 155)
 BGCOLOR = LIGHTBLUE
 
 # pos
-GH1_START = (4800, 3904)
-GH2_START = (1600, 1344)
-GH3_START = (4800, 1344)
+LAB_ENTER = (2230, 590)
+# GH2_START = (1600, 1344)
+# GH3_START = (4800, 1344)
 
 # GH1_OUT = (4736, 3904)
 # GH2_OUT = (1536, 1344)

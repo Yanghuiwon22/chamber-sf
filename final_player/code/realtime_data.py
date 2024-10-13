@@ -124,57 +124,60 @@ class Get_data:
 
     # 미니챔버 데이터 가져오기
     def chamber_data(self):
-        url = 'https://api.thingspeak.com/channels/1999883/feeds.json?api_key=XP1R5CVUPVXTNJT0&'
+        for i in range(1,3):
+            url = f'https://api.thingspeak.com/channels/1999884/fields/{i}.json?api_key=TYCQQ3CFQME0PITO&results=2'
 
-        output = {}
-        response = requests.get(url + 'results=1')
-        if response.status_code == 200:
-            self.livedata_mini_chamber = True
-            df = pd.DataFrame(response.json()['feeds'])
-            df.rename(columns={'field1': 'temp', 'field2': 'hum', 'field3':'lux'}, inplace=True)
-            df.insert(loc=0, column='Time', value=df['created_at'][0].split('T')[1].split('Z')[0])
-            df.insert(loc=0, column='Date', value=df['created_at'][0].split('T')[0])
+            output = {}
+            response = requests.get(url)
+            if response.status_code == 200:
+                self.livedata_mini_chamber = True
+                if i == 1:
+                    df = pd.DataFrame(response.json()['feeds'])
+                    df.rename(columns={'field1': 'temp'}, inplace=True)
 
-            df.drop(columns=['created_at','entry_id','field4'], inplace=True)
+                elif i == 2:
+                    df['hum'] = response.json()['feeds'][0]['field2']
 
-            df['Time'] = pd.to_datetime(df['Time']) + pd.Timedelta(hours=9)
-            df['Time'] = df['Time'].dt.strftime('%H:%M:%S')
-            output['Date'] = df['Date'].values[0]
-            output['Time'] = df['Time'].values[0]
+        df = df.iloc[0:1]
+        df.insert(loc=0, column='Time', value=df['created_at'].apply(lambda x: x.split('T')[1].split('Z')[0]))
+        df.insert(loc=0, column='Date', value=df['created_at'].apply(lambda x: x.split('T')[0]))
 
-            # output['Time'] = datetime.strptime(df['Time'].values[0], 'H:%M:%S')
-            output['temp'] = df['temp'].values[0]
-            output['hum'] = df['hum'].values[0]
-            output['lux'] = df['lux'].values[0]
-        else:
-            self.livedata_mini_chamber = False
+        output['Time'] = df['created_at'].apply(lambda x: x.split('T')[1].split('Z')[0])
+        output['Time'] = output['Time'].values + pd.Timedelta(hours=9)
+        output['Time'] = str(output['Time']).split(' ')[-1].split("'")[0]
+        output['Date'] = df['created_at'].apply(lambda x: x.split('T')[0]).values[0]
+
+        output['temp'] = str(int(float(df['temp'].values[0])))
+        output['hum'] = str(int(float(df['hum'].values[0])))
+        output['lux'] = 'None'
 
         # 실시간 데이터가 반영되지 않을때 (과거 데이터를 수신할 때)
-        set_time = datetime.strptime(output['Time'], ('%H:%M:%S'))
+        set_time = datetime.strptime(output['Time'], '%H:%M:%S')
         if (datetime.now() - set_time).seconds/60 > 5 and output['Date'] != datetime.now().strftime('%Y-%m-%d'):
             self.livedata_mini_chamber = False
 
+        print(output)
         return {'Date' : output['Date'], 'Time' : output['Time'], 'temp' : output['temp'], 'hum' : output['hum'], 'lux' : output['lux']}
 
 
-    def get_chamber_data(self):
-        url = 'https://api.thingspeak.com/channels/1999883/feeds.json?api_key=XP1R5CVUPVXTNJT0&'
-
-        output = {}
-        response = requests.get(url + 'results=5000')
-        if response.status_code == 200:
-            df = pd.DataFrame(response.json()['feeds'])
-            df.rename(columns={'field1': 'temp', 'field2': 'hum', 'field3':'lux'}, inplace=True)
-            df.insert(loc=0, column='Time', value=df['created_at'][0].split('T')[1].split('Z')[0])
-            df.drop(columns=['created_at','entry_id','field4'], inplace=True)
-
-            df['Time'] = pd.to_datetime(df['Time']) + pd.Timedelta(hours=9)
-            df['Time'] = df['Time'].dt.strftime('%H:%M:%S')
-            output['Time'] = df['Time'].values[0]
-            output['temp'] = df['temp'].values[0]
-            output['hum'] = df['hum'].values[0]
-            output['lux'] = df['lux'].values[0]
-        return [output['temp'], output['hum'], output['lux']]
+    # def get_chamber_data(self):
+    #     url = 'https://api.thingspeak.com/channels/1999883/feeds.json?api_key=XP1R5CVUPVXTNJT0&'
+    #
+    #     output = {}
+    #     response = requests.get(url + 'results=5000')
+    #     if response.status_code == 200:
+    #         df = pd.DataFrame(response.json()['feeds'])
+    #         df.rename(columns={'field1': 'temp', 'field2': 'hum', 'field3':'lux'}, inplace=True)
+    #         df.insert(loc=0, column='Time', value=df['created_at'][0].split('T')[1].split('Z')[0])
+    #         df.drop(columns=['created_at','entry_id','field4'], inplace=True)
+    #
+    #         df['Time'] = pd.to_datetime(df['Time']) + pd.Timedelta(hours=9)
+    #         df['Time'] = df['Time'].dt.strftime('%H:%M:%S')
+    #         output['Time'] = df['Time'].values[0]
+    #         output['temp'] = df['temp'].values[0]
+    #         output['hum'] = df['hum'].values[0]
+    #         output['lux'] = df['lux'].values[0]
+    #     return [output['temp'], output['hum'], output['lux']]
 
     def chamber_display(self,dt):
         self.chamber_display_dt += dt
@@ -210,7 +213,6 @@ class Get_data:
                 print(f'save {y}')
         except:
             self.mini_chamber_graph = False
-
 
     def get_week_data(self):
         print('get week data run')
@@ -257,8 +259,6 @@ class Get_data:
             print('===== after save =====')
         except:
             pass
-
-
 
     def draw_week_data(self):
         try:
@@ -348,9 +348,9 @@ class Get_data:
 
 
 #
-# if __name__ == '__main__':
-#     data = Get_data()
-#     # data.get_week_data('2024-05-29')
+if __name__ == '__main__':
+    data = Get_data()
+    data.chamber_data()
 #     # data.draw_week_data()
 #     data.get_chamber_graph('2024-05-28', 't_h')
 #     data.get_chamber_graph('2024-05-28', 'lux')

@@ -114,18 +114,21 @@ class Level:
 		# 		name = obj.name,
 		# 		player_add = self.player_add)
 		#
-		# # wildflowers
-		# for obj in tmx_data.get_layer_by_name('Decoration'):
-		# 	WildFlower((obj.x, obj.y), obj.image, [self.all_sprites_map, self.collision_sprites])
-		#
+
+
 		#
 		# # collion tiles
 		# for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
 		# 	Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
-		#
+
+		# lab 공간 세팅
+		for x, y, surf in tmx_data.get_layer_by_name('Lab Decoration').tiles():
+			Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), [self.all_sprites_map, self.collision_sprites])
+
 		# Player
 		for obj in tmx_data.get_layer_by_name('Player'):
-			if obj.name == 'Start':
+
+			if obj.name == 'lab_enter':
 				self.player = Player(
 					pos=(obj.x, obj.y),
 					group=self.all_sprites_map,
@@ -137,13 +140,19 @@ class Level:
 					toggle_dashboard=self.toggle_dashboard
 				)
 
-		# for x, y, surf in tmx_data.get_layer_by_name('floor').tiles():
-		# 	Generic((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites_map)
+			if obj.name == 'lab':
+				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
-		#
-		# 	if obj.name == 'Trader':
-		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-		#
+			if obj.name == 'lab_chamber':
+				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+
+			if obj.name == 'lab_api':
+				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+
+			if obj.name == 'lab_out':
+				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+
+
 		# 	if obj.name == 'Enter_gh1':
 		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 		#
@@ -192,7 +201,7 @@ class Level:
 		Generic(
 			pos = (0, 0),
 			surf = pygame.image.load(os.path.join(ALL_PATH, 'data/greenhouse_map.png')).convert_alpha(),  # ----> 배경 화면 사진
-			groups = self.all_sprites,
+			groups = self.all_sprites_map,
 			z = LAYERS['ground'])
 
 	def grh_setup(self):
@@ -248,6 +257,7 @@ class Level:
 		self.shop_active = not self.shop_active
 
 	def toggle_dashboard(self):
+		# print('after toggle')
 		self.dashboard_active = not self.dashboard_active
 		self.dashboard.index = 0
 
@@ -289,17 +299,10 @@ class Level:
 					Particle(plant.rect.topleft, plant.image, self.all_sprites_map, z = LAYERS['main'])
 					self.soil_layer.grid[plant.rect.centery // TILE_SIZE][plant.rect.centerx // TILE_SIZE].remove('P')
 
-	def first_func(self):
-		print('first_func')
-
-	def second_func(self):
-		print('second_func')
-
-	def third_func(self):
-		print('third_func')
 
 	def run(self,dt):
 		self.display_surface.fill('black')  # ---------> 검은 화면 기본세팅
+
 		# updates
 		if self.shop_active:
 			self.menu.update()

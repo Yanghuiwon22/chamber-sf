@@ -194,7 +194,6 @@ class DashBoard:
                 self.index -= 1
                 print(self.index)
 
-                # print(f'이전페이지 : {self.index}')
                 self.timer.activate()
 
             if key_right > 0.5 and self.index < 4:
@@ -202,7 +201,7 @@ class DashBoard:
                 print(self.index)
                 self.timer.activate()
 
-            if self.index == 0 and self.player.pos_layer == 'mini_chamber':
+            if self.index == 0 and self.player.pos_layer == 'lab_chabmer':
                 if key_1:
                     if self.index_light > 0:
                         self.index_light = 0
@@ -390,6 +389,7 @@ class DashBoard:
     #     self.get_graph_lux = self.get_data_graph.get_chamber_graph(date, 'lux')
 
     def update(self):
+        print('update dashboard')
         self.input()
         self.get_chamber_data()
         self.get_grh_data()
@@ -399,7 +399,8 @@ class DashBoard:
         pygame.draw.rect(self.display_surface, 'white', self.bg_rect)
         self.show_entry_bg('graphics/edit/monitor.png')
 
-        if self.player.pos_layer == 'mini_chamber':
+        print(self.player.pos_layer, self.index)
+        if self.player.pos_layer == 'lab_chamber':
             if self.index == 0:
                 for title_index, title_surf in enumerate(self.title_surf):
                     top = self.main_rect.top + title_index * (self.main_rect.height / 2 )

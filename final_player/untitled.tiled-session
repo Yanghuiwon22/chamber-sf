@@ -103,6 +103,7 @@
             "scaleInEditor": 1
         },
         "data/Tilesets/[A]Grass1-Dirt3_pipo.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1
         },
         "data/Tilesets/[A]LongGrass_pipo.tsx": {
@@ -138,7 +139,12 @@
         },
         "data/Tilesets/interaction.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "data/Tilesets/lab.tsx": {
+            "dynamicWrapping": true,
+            "scaleInEditor": 1
         },
         "data/Tilesets/test_bush.tsx": {
             "dynamicWrapping": true,
@@ -152,8 +158,8 @@
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 946.6666666666665,
-                "y": 706.6666666666667
+                "x": 828,
+                "y": 785.3333333333333
             }
         },
         "data/basemap.tmx#CP_V1.0.4": {
@@ -174,11 +180,11 @@
             }
         },
         "data/greenhouse_map.tmx": {
-            "scale": 2,
-            "selectedLayer": 2,
+            "scale": 1.5,
+            "selectedLayer": 11,
             "viewCenter": {
-                "x": 1399,
-                "y": 914.25
+                "x": 2054.6666666666665,
+                "y": 520
             }
         },
         "data/greenhouse_map.tmx#Plant Decoration": {
@@ -204,7 +210,7 @@
         }
     },
     "last.externalTilesetPath": "C:/code/chamber-sf/final_player/data/Tilesets",
-    "last.imagePath": "C:/code/chamber-sf/final_player/graphics/objects",
+    "last.imagePath": "C:/code/chamber-sf/final_player/graphics/lab",
     "map.height": 100,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
@@ -215,6 +221,8 @@
     ],
     "project": "untitled.tiled-project",
     "recentFiles": [
+        "data/Tilesets/interaction.tsx",
+        "data/Tilesets/lab.tsx",
         "data/Tilesets/test_bush.tsx",
         "data/greenhouse_map.tmx",
         "data/basemap.tmx",
@@ -224,8 +232,7 @@
         "data/Tilesets/CP_V1.0.4.tsx",
         "data/Tilesets/day buildings front.tsx",
         "data/Tilesets/[A]Grass1-Dirt1_pipo.tsx",
-        "data/test2.tmx",
-        "data/test.tmx"
+        "data/test2.tmx"
     ],
     "resizeMap.removeObjects": false,
     "tileset.lastUsedFormat": "tsx",

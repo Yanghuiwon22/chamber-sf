@@ -380,6 +380,7 @@ class DashBoard:
             else:
                 color = 'black'
             text_surf = self.font.render(item, False, color)
+            print(item)
 
             self.data_surf.append(text_surf)
             self.data_height = text_surf.get_height() + 2*self.space
@@ -433,9 +434,7 @@ class DashBoard:
         self.show_entry_bg(os.path.join(ALL_PATH, 'graphics/edit/monitor.png'))
 
 
-        if self.player.pos_layer == 'mini_chamber':
-
-
+        if self.player.pos_layer == 'lab_chamber':
             if self.index == 0:
                 for title_index, title_surf in enumerate(self.title_surf):
                     top = self.main_rect.top + title_index * (self.main_rect.height / 2 )
