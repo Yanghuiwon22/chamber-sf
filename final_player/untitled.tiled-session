@@ -47,6 +47,7 @@
             "scaleInDock": 1
         },
         "data/Tilesets/BD001.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1
         },
         "data/Tilesets/CP_V1.0.4.tsx": {

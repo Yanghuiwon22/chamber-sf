@@ -71,7 +71,7 @@ class Get_data:
         if response.status_code == 200:
             result = response.content
             data = json.loads(result.decode('utf-8'))
-
+            print(type(data))
 
             # realtime_lab = dic_lab['grh']
 
@@ -85,7 +85,38 @@ class Get_data:
             output['Field 8'] = str(data['plot8'][-1])
 
             return output
-            # return [output['day_temp'], output['day_hum'], '--']
+
+    def get_buan_weather_data(self):
+        url = 'http://web01.taegon.kr:7500/weather_now/buan'
+        response = requests.get(url)
+        output = {}
+        output_dic = {}
+
+        if response.status_code == 200:
+            result = response.content
+            data = json.loads(result.decode('utf-8'))
+            print(data)
+
+            now_time = data.split(',')[0]
+            ta = data.split(',')[1]
+            ws = data.split(',')[2]
+            wdKo = data.split(',')[3]
+            wwKo = data.split(',')[4]
+
+            for name, value in {'updated_time': now_time, 'temperature': ta, 'wind power': ws, 'wind direction': wdKo, 'weather_status':wwKo}.items():
+
+                value = value.split('": ')[-1]
+                value = value.replace('"', '')
+
+                output_dic[name] = value
+
+            output['updated_time'] = output_dic['updated_time']
+            output['temperature'] = output_dic['temperature']
+            output['wind(direction)'] = f"{output_dic['wind power']}({output_dic['wind direction']})"
+            output['weather'] = output_dic['weather_status']
+
+        return output
+
     # 헤이홈 온실 데이터
     def get_gh_data(self):
         url = 'http://web01.taegon.kr:7600/recent'
@@ -358,6 +389,7 @@ class Get_data:
 if __name__ == '__main__':
     data = Get_data()
     data.get_buan_soilmoisture_data()
+    data.get_buan_weather_data()
 #     # data.draw_week_data()
 #     data.get_chamber_graph('2024-05-28', 't_h')
 #     data.get_chamber_graph('2024-05-28', 'lux')

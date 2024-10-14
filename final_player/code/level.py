@@ -116,14 +116,14 @@ class Level:
 		#
 
 
-		#
-		# # collion tiles
-		# for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
-		# 	Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
+
+		# collion tiles
+		for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
+			Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
 
 		# lab 공간 세팅
 		for x, y, surf in tmx_data.get_layer_by_name('Lab Decoration').tiles():
-			Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map])
+			Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
 
 
 
@@ -159,6 +159,9 @@ class Level:
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
 			if obj.name == 'grh_api':
+				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+
+			if obj.name == 'grh_out':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
 

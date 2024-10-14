@@ -34,6 +34,7 @@ class DashBoard:
         self.get_lab_data = get_data.get_lab_data()
         self.get_greenhouse_data = get_data.get_gh_data()
         self.get_buan_soilmoisture_data = get_data.get_buan_soilmoisture_data()
+        self.get_buan_weather_data = get_data.get_buan_weather_data()
 
         self.livedata_mini_chamber = get_data.livedata_mini_chamber
         # self.livedata_mini_chamber = False
@@ -656,24 +657,31 @@ class DashBoard:
 
         if self.player.pos_layer == 'buan_api':
             if self.index == 0:
-                pass
-                # for title_index, title_surf in enumerate(self.title_surf):
-                #     top = self.main_rect.top + title_index * (self.main_rect.height / 2 )
-                #     self.show_entry(title_surf, top)
-                #
-                # for title_index, surf in enumerate((self.tdata_surf, self.tcontrol_surf)):
-                #     top = self.main_rect.top + title_index * (self.main_rect.height / 2 )  + self.space
-                #     self.show_entry_p(surf, top)
-                #
-                #
-                # for text_index, text_surf in enumerate([self.data_208_surf]):
-                #     top = self.main_rect.top + self.space + self.ptitle_rect.height + self.space
-                #     self.show_entry_pd(text_surf, top)
-                #
-                # for text_index, text_surf in enumerate([self.text_surf]):
-                #     top = self.main_rect.top + self.main_rect.height/2 + self.space + self.ptitle_rect.height + self.space
-                #     self.show_entry_pd(text_surf, top)
+                # 1페이지 구성
+                # 1페이지 구성 - 제목
+                text_surf = 'BUAN weather data'
+                title_surf = self.font.render(text_surf, False, 'black')
 
+                left = (self.bg_rect.left + self.bg_rect.width/2) - title_surf.get_width()/2
+                top = self.bg_rect.top + self.space * 4
+
+                self.show_field_text(title_surf, left, top)
+                
+                # 1페이지 구성 - 요소 텍스트 + 기상 데이터
+                buan_weather_data = self.get_buan_weather_data
+                top = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2
+                i = 1
+                for name, value in buan_weather_data.items():
+                    if name != 'updated_time':
+                        text_surf = self.font.render(name, False, 'brown')
+                        data_surf = self.font.render(value, False, 'black')
+
+                        left = self.bg_rect.left + (i - 1) * (self.bg_rect.width / 3) + self.space*3
+                        top_data = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2 + text_surf.get_height() + self.space * 2
+
+                        self.show_field_text(text_surf, left, top)
+                        self.show_field_text(data_surf, left, top_data)
+                        i += 1
 
             elif self.index == 1:
                 # 2페이지 구성
@@ -686,7 +694,7 @@ class DashBoard:
 
                 self.show_field_text(title_surf, left, top)
 
-                # 2페이지 구성 - 필지 텍스트
+                # 2페이지 구성 - 필지 텍스트 & 토양수분 데이터
                 for i in range(1,9): # 1, 2, 3, 4
                     text_surf = f'Field {i}'
                     field_surf = self.font.render(text_surf, False, 'brown')
@@ -709,7 +717,6 @@ class DashBoard:
                     self.show_field_text(field_surf, left, top)
                     self.show_field_text(data_surf, left, top_data)
 
-                # 2페이지 구성 - 토양수분 데이터
 
 
             elif self.index == 2:
