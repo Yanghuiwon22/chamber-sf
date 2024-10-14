@@ -33,6 +33,7 @@ class DashBoard:
         self.get_data_graph = get_data
         self.get_lab_data = get_data.get_lab_data()
         self.get_greenhouse_data = get_data.get_gh_data()
+        self.get_buan_soilmoisture_data = get_data.get_buan_soilmoisture_data()
 
         self.livedata_mini_chamber = get_data.livedata_mini_chamber
         # self.livedata_mini_chamber = False
@@ -688,18 +689,28 @@ class DashBoard:
                 # 2페이지 구성 - 필지 텍스트
                 for i in range(1,9): # 1, 2, 3, 4
                     text_surf = f'Field {i}'
+                    field_surf = self.font.render(text_surf, False, 'brown')
+                    text_surf_data = self.get_buan_soilmoisture_data[text_surf]
+                    data_surf = self.font.render(text_surf_data, False, 'black')
+
                     if i <= 4:
-                        top = self.bg_rect.top + self.space*4 + title_surf.get_height() + self.space*2
+                        top = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2
                         left = self.bg_rect.left + (i - 1) * (self.bg_rect.width / 4)
+
+                        top_data = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2 + field_surf.get_height() + self.space * 2
                     else:
-                        # (self.bg_rect.height - title_surf.get_height())/2
+                        top = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2 + (
+                                    self.bg_rect.height - title_surf.get_height()) / 2
+                        left = self.bg_rect.left + ((i - 4) - 1) * (self.bg_rect.width / 4)
 
-                        top = self.bg_rect.top + self.space*4 + title_surf.get_height() + self.space*2 + (self.bg_rect.height - title_surf.get_height())/2
-                        left = self.bg_rect.left + ((i-4) - 1) * (self.bg_rect.width / 4)
+                        top_data = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2 + (
+                                    self.bg_rect.height - title_surf.get_height()) / 2 + field_surf.get_height() + self.space * 2
 
-                    field_surf = self.font.render(text_surf, False, 'red')
-                    print(text_surf, self.bg_rect.left, left, self.bg_rect.top, top)
                     self.show_field_text(field_surf, left, top)
+                    self.show_field_text(data_surf, left, top_data)
+
+                # 2페이지 구성 - 토양수분 데이터
+
 
             elif self.index == 2:
                 pass

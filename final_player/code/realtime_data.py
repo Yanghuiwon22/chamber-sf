@@ -61,10 +61,34 @@ class Get_data:
             # return output
             return [output['day_temp'], output['day_hum'], '--']
 
+    def get_buan_soilmoisture_data(self):
+        url = 'http://web01.taegon.kr:7500/api/zentra/data/plot'
+
+        response = requests.get(url)
+        output = {}
+
+
+        if response.status_code == 200:
+            result = response.content
+            data = json.loads(result.decode('utf-8'))
+
+
+            # realtime_lab = dic_lab['grh']
+
+            output['Field 1'] = str(data['plot1'][-1])
+            output['Field 2'] = str(data['plot2'][-1])
+            output['Field 3'] = str(data['plot3'][-1])
+            output['Field 4'] = str(data['plot4'][-1])
+            output['Field 5'] = str(data['plot5'][-1])
+            output['Field 6'] = str(data['plot6'][-1])
+            output['Field 7'] = str(data['plot7'][-1])
+            output['Field 8'] = str(data['plot8'][-1])
+
+            return output
+            # return [output['day_temp'], output['day_hum'], '--']
     # 헤이홈 온실 데이터
     def get_gh_data(self):
         url = 'http://web01.taegon.kr:7600/recent'
-        print("get_lab_data")
 
         response = requests.get(url)
         output = {}
@@ -330,11 +354,10 @@ class Get_data:
 
 
 
-
 #
 if __name__ == '__main__':
     data = Get_data()
-    data.chamber_data()
+    data.get_buan_soilmoisture_data()
 #     # data.draw_week_data()
 #     data.get_chamber_graph('2024-05-28', 't_h')
 #     data.get_chamber_graph('2024-05-28', 'lux')
