@@ -1,44 +1,42 @@
-import requests
-import pandas as pd
-import pygame
 import matplotlib.pyplot as plt
-import seaborn as sns
+import pygame
+import os
 
-def get_data(date):
-    date = '2024-05-23'
-    url = f'http://web01.taegon.kr:7600/history/{date}'
+# Matplotlib로 그래프 생성 및 이미지로 저장
+plt.plot([1, 2, 3, 4], [10, 20, 25, 30])
+plt.title("Matplotlib Graph")
+plt.savefig("graph_matplotlib.png")  # 그래프를 이미지로 저장
+plt.close()  # plt 창 닫기
 
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
-        df = pd.DataFrame([])
-        # df['date'] = data['th1_date']
-        # df['hour'] = df['date'].str.split(':').str[0]
-        # df['temp'] = data['th1_temp']
-        # df['hum'] = data['th1_humid']
+# Pygame 초기화
+pygame.init()
 
-        df['date'] = data['grh_date']
-        df['hour'] = df['date'].str.split(':').str[0]
-        df['temp'] = data['grh_temp']
-        df['hum'] = data['grh_humid']
+# 창 크기 설정
+width, height = 640, 480
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption("Matplotlib Graph in Pygame")
 
-        return df
-    else:
-        print('fail')
+# 이미지 불러오기
+graph_image = pygame.image.load("graph_matplotlib.png")
+graph_image = pygame.transform.scale(graph_image, (width, height))  # 창 크기에 맞춰 이미지 크기 조정
 
-def draw_graph(df, date):
-    ax = sns.lineplot(data=df, x='hour', y='temp')
-    ax.set_ylabel('temp')
-    ax.set_xlabel('date')
-    ax.set_title(f'{date}-temp graph')
-    plt.show()
-    # plt.savefig(f'output/graph/{date}_{y}.png')
+# 루프 변수
+running = True
 
-def main():
-    date = '2024-05-23'
-    data = get_data(date)
-    draw_graph(data, date)
+# 메인 루프
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
+    # 화면에 이미지 그리기
+    screen.blit(graph_image, (0, 0))
 
-if __name__ == '__main__':
-    main()
+    # 화면 업데이트
+    pygame.display.flip()
+
+# Pygame 종료
+pygame.quit()
+
+# 그래프 이미지 파일 삭제
+os.remove("graph_matplotlib.png")

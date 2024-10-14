@@ -95,25 +95,31 @@ class Get_data:
         if response.status_code == 200:
             result = response.content
             data = json.loads(result.decode('utf-8'))
-            print(data)
 
-            now_time = data.split(',')[0]
-            ta = data.split(',')[1]
-            ws = data.split(',')[2]
-            wdKo = data.split(',')[3]
-            wwKo = data.split(',')[4]
+            try:
+                now_time = data.split(',')[0]
+                ta = data.split(',')[1]
+                ws = data.split(',')[2]
+                wdKo = data.split(',')[3]
+                wwKo = data.split(',')[4]
 
-            for name, value in {'updated_time': now_time, 'temperature': ta, 'wind power': ws, 'wind direction': wdKo, 'weather_status':wwKo}.items():
+                for name, value in {'updated_time': now_time, 'temperature': ta, 'wind power': ws, 'wind direction': wdKo, 'weather_status':wwKo}.items():
 
-                value = value.split('": ')[-1]
-                value = value.replace('"', '')
+                    value = value.split('": ')[-1]
+                    value = value.replace('"', '')
 
-                output_dic[name] = value
+                    output_dic[name] = value
 
-            output['updated_time'] = output_dic['updated_time']
-            output['temperature'] = output_dic['temperature']
-            output['wind(direction)'] = f"{output_dic['wind power']}({output_dic['wind direction']})"
-            output['weather'] = output_dic['weather_status']
+                output['updated_time'] = output_dic['updated_time']
+                output['temperature'] = output_dic['temperature']
+                output['wind(direction)'] = f"{output_dic['wind power']}({output_dic['wind direction']})"
+                output['weather'] = output_dic['weather_status']
+
+            except:
+                output['updated_time'] = 'YYYY-mm-DD HH:MM'
+                output['temperature'] = '--'
+                output['wind(direction)'] = '--m/s(-)'
+                output['weather'] = '--'
 
         return output
 
