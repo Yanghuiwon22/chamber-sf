@@ -362,6 +362,13 @@ class DashBoard:
         self.date_rect = text_surf.get_rect(center=(date_rect.centerx, date_rect.centery))
         self.display_surface.blit(text_surf, self.date_rect)
 
+    # 부안 필지별 토양수분 데이터 표시
+    def show_field_text(self, text_surf, left, top):
+        text_pos = pygame.Rect(left, top,
+                                (self.main_rect.width-self.space*2)/3, text_surf.get_height() + self.space*2)
+        self.text_pos = text_surf.get_rect(center=(text_pos.centerx, text_pos.centery))
+        self.display_surface.blit(text_surf, self.text_pos)
+
     def show_entry_fake(self, top):
         fake_surf = self.font.render('Live data is currently not available : The data being displayed is historical', False, 'red')
         fake_rect = pygame.Rect(SCREEN_WIDTH/2 -  fake_surf.get_width()/2, top,
@@ -646,30 +653,42 @@ class DashBoard:
                 # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 # self.show_entry_img(self.chamber_lux, top)
 
-
-        if self.player.pos_layer == 'buan':
+        if self.player.pos_layer == 'buan_api':
             if self.index == 0:
-                for title_index, title_surf in enumerate(self.title_surf):
-                    top = self.main_rect.top + title_index * (self.main_rect.height / 2 )
-                    self.show_entry(title_surf, top)
-
-                for title_index, surf in enumerate((self.tdata_surf, self.tcontrol_surf)):
-                    top = self.main_rect.top + title_index * (self.main_rect.height / 2 )  + self.space
-                    self.show_entry_p(surf, top)
-
-
-                for text_index, text_surf in enumerate([self.data_208_surf]):
-                    top = self.main_rect.top + self.space + self.ptitle_rect.height + self.space
-                    self.show_entry_pd(text_surf, top)
-
-                for text_index, text_surf in enumerate([self.text_surf]):
-                    top = self.main_rect.top + self.main_rect.height/2 + self.space + self.ptitle_rect.height + self.space
-                    self.show_entry_pd(text_surf, top)
+                pass
+                # for title_index, title_surf in enumerate(self.title_surf):
+                #     top = self.main_rect.top + title_index * (self.main_rect.height / 2 )
+                #     self.show_entry(title_surf, top)
+                #
+                # for title_index, surf in enumerate((self.tdata_surf, self.tcontrol_surf)):
+                #     top = self.main_rect.top + title_index * (self.main_rect.height / 2 )  + self.space
+                #     self.show_entry_p(surf, top)
+                #
+                #
+                # for text_index, text_surf in enumerate([self.data_208_surf]):
+                #     top = self.main_rect.top + self.space + self.ptitle_rect.height + self.space
+                #     self.show_entry_pd(text_surf, top)
+                #
+                # for text_index, text_surf in enumerate([self.text_surf]):
+                #     top = self.main_rect.top + self.main_rect.height/2 + self.space + self.ptitle_rect.height + self.space
+                #     self.show_entry_pd(text_surf, top)
 
 
             elif self.index == 1:
-                date_surf = self.date_surf[self.date_index]
-                top = self.bg_rect.top + self.space*4
+                for i in range(1,9): # 1, 2, 3, 4
+                    field_surf = f'Field {i}'
+                    if i <= 4:
+                        top = self.bg_rect.top + self.space*4
+                    else:
+                        top = self.bg_rect.top + (self.bg_rect.height)/2 + self.space*4
+
+                left = self.bg_rect.left + (i-1) * (self.bg_rect.width/4)
+                field_surf = Font
+                self.show_field_text(field_surf, left, top)
+
+
+                # date_surf = self.date_surf[self.date_index]
+                # top = self.bg_rect.top + self.space*4
                 self.show_entry_date(date_surf, top)
                 #
                 # self.chamber_t_h = f'..\graphics\chamber_graph\chamber_t&h.png'
@@ -677,13 +696,15 @@ class DashBoard:
                 # self.show_entry_img(self.chamber_t_h, top)
 
             elif self.index == 2:
-                date_surf = self.date_surf[self.date_index]
-                top = self.bg_rect.top + self.space*4
-                self.show_entry_date(date_surf, top)
+                pass
+                # date_surf = self.date_surf[self.date_index]
+                # top = self.bg_rect.top + self.space*4
+                # self.show_entry_date(date_surf, top)
 
                 # self.chamber_lux = f'..\graphics\chamber_graph\chamber_lux.png'
                 # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 # self.show_entry_img(self.chamber_lux, top)
+
 
 
 

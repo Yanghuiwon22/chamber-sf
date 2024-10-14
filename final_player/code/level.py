@@ -165,6 +165,12 @@ class Level:
 			if obj.name == 'buan':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
+			if obj.name == 'buan_api':
+				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+
+			if obj.name == 'buan_out':
+				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+
 		# 	if obj.name == 'Enter_gh1':
 		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 		#
@@ -213,6 +219,10 @@ class Level:
 
 		for x, y, surf in tmx_data.get_layer_by_name('Grh Decoration').tiles():
 			Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
+
+		for x, y, surf in tmx_data.get_layer_by_name('Buan Decoration').tiles():
+			Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
+
 
 		Generic(
 			pos = (0, 0),

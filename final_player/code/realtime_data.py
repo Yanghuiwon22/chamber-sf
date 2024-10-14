@@ -303,7 +303,7 @@ class Get_data:
         plt.savefig(os.path.join(ALL_PATH, f'graphics/chamber_graph/week_graph_t_h.png'))
 
     def draw_week_data(self):
-        df = pd.read_csv('C:\code\chamber-sf\\final_player\code\\fake_df.csv')
+        df = pd.read_csv('fake_df.csv')
 
         df = df[['Date&Time','Time', 'temp', 'hum', 'lux']].dropna()
         # df['Date'] = df['Date&Time'].str.split(' ').str[0]

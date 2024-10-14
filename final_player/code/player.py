@@ -261,8 +261,18 @@ class Player(pygame.sprite.Sprite):
 
 
 					if collided_interaction_sprite[0].name == "buan":
-						self.pos_layer = 'grh_api'
+						self.sleep = True
+						self.pos_layer = 'buan'
+						self.to_go = BUAN_ENTER[0], BUAN_ENTER[1]
+						self.before_go = self.pos.x, self.pos.y
+
+					if collided_interaction_sprite[0].name == "buan_api":
+						self.pos_layer = 'buan_api'
 						self.toggle_dashboard()
+
+					if collided_interaction_sprite[0].name == "buan_out":
+						self.sleep = True
+						self.to_go = self.before_go
 
 
 

@@ -10,8 +10,8 @@ OFFSET_X = 0  # 필요에 따라 조정
 OFFSET_Y = 0  # 필요에 따라 조정
 
 LAB_ENTER = (2640, 560)
-
 GRH_ENTER = (2720, 1375)
+BUAN_ENTER = (2630, 2350)
 
 
 
