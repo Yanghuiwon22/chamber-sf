@@ -44,7 +44,6 @@ class Get_data:
     # 헤이홈 연구실 데이터 
     def get_lab_data(self):
         url = 'http://web01.taegon.kr:7600/recent'
-        print("get_lab_data")
 
         response = requests.get(url)
         output = {}
@@ -61,13 +60,6 @@ class Get_data:
 
             # return output
             return [output['day_temp'], output['day_hum'], '--']
-
-            # return [output['day_temp'], output['day_hum'], 'None']
-        # return {
-        #     "day_time": "21:31",
-        #     "day_temp": 20.5,
-        #     "day_hum": 85.2,
-        # }
 
     # 헤이홈 온실 데이터
     def get_gh_data(self):
@@ -156,7 +148,6 @@ class Get_data:
         if (datetime.now() - set_time).seconds/60 > 5 and output['Date'] != datetime.now().strftime('%Y-%m-%d'):
             self.livedata_mini_chamber = False
 
-        print(output)
         return {'Date' : output['Date'], 'Time' : output['Time'], 'temp' : output['temp'], 'hum' : output['hum'], 'lux' : output['lux']}
 
 
@@ -210,12 +201,10 @@ class Get_data:
                 file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/chamber_{y}.png')
                 print(file_path)
                 image.save(file_path)  # savefig 대신 save 사용
-                print(f'save {y}')
         except:
             self.mini_chamber_graph = False
 
     def get_week_data(self):
-        print('get week data run')
         date = datetime.now()
         date = date.date()
 
@@ -234,7 +223,6 @@ class Get_data:
                     df = pd.read_csv(io.StringIO(data))
                     df_all = pd.concat([df_all, df])
                     df_all.reset_index(drop=True)
-                    print(df_all)
 
             # url = 'https://api.thingspeak.com/channels/1999883/feeds.json?api_key=XP1R5CVUPVXTNJT0&'
             #
@@ -253,10 +241,7 @@ class Get_data:
             #     output['hum'] = df['hum'].values[0]
             #     output['lux'] = df['lux'].values[0]
             # return [output['temp'], output['hum'], output['lux']]
-
-            print('===== before save =====')
             df_all.to_csv('./df_all.csv')
-            print('===== after save =====')
         except:
             pass
 
@@ -318,7 +303,6 @@ class Get_data:
         plt.savefig(os.path.join(ALL_PATH, f'graphics/chamber_graph/week_graph_t_h.png'))
 
     def draw_week_data(self):
-        print('1. run draw_week_data')
         df = pd.read_csv('C:\code\chamber-sf\\final_player\code\\fake_df.csv')
 
         df = df[['Date&Time','Time', 'temp', 'hum', 'lux']].dropna()

@@ -42,9 +42,9 @@ class DashBoard:
         self.index_water = 0
         self.index_vent = 0
 
-        self.control_led = ['led_off', 'leed_on']
+        self.control_led = ['L_fan', 'H_fan']
         self.control_water = ['water_off', 'water_on']
-        self.control_vent = ['fan_off', 'fan_on']
+        self.control_vent = ['L_fan', 'H_fan']
 
         self.light_data = 'led_off'
         self.water_data = 'water_off'
@@ -55,6 +55,13 @@ class DashBoard:
         on_button = os.path.join(ALL_PATH, 'graphics/edit/on_button.png')
         off_button = os.path.join(ALL_PATH, 'graphics/edit/off_button.png')
         self.control_status = [off_button, on_button]
+
+        lab_led_r = os.path.join(ALL_PATH, 'graphics/lab/lab_led_r.png')
+        lab_led_g = os.path.join(ALL_PATH, 'graphics/lab/lab_led_g.png')
+        lab_led_b = os.path.join(ALL_PATH, 'graphics/lab/lab_led_b.png')
+        lab_led_w = os.path.join(ALL_PATH, 'graphics/lab/lab_led_w.png')
+        lab_led_off = os.path.join(ALL_PATH, 'graphics/lab/lab_led_off.png')
+        self.led_control_status = [lab_led_off, lab_led_r, lab_led_g, lab_led_b, lab_led_w]
 
         # entries
         self.options_title = ('data', 'control')
@@ -202,48 +209,54 @@ class DashBoard:
         if not self.timer.active:
             if (key_left < -0.5 or key_left == True) and self.index > 0:
                 self.index -= 1
-                print(self.index)
 
-                # print(f'이전페이지 : {self.index}')
                 self.timer.activate()
 
             if key_right > 0.5 and self.index < 4:
                 self.index += 1
-                print(self.index)
                 self.timer.activate()
 
-            if self.index == 0 and self.player.pos_layer == 'mini_chamber':
-                if key_1:
-                    if self.index_light > 0:
-                        self.index_light = 0
-                    else:
-                        self.index_light = 1
-                    self.light_data = self.control_led[self.index_light]
+            if self.index == 0:
+                if self.player.pos_layer == 'lab_chamber':
+                    if key_1:
+                        self.index_light += 1
 
-                    self.control_chamber(self.light_data)
-                    self.timer.activate()
+                        if self.index_light == 1:  # RED
+                            self.light_data = 'R'
+                        elif self.index_light == 2:  # GREEN
+                            self.light_data = 'G'
+                        elif self.index_light == 3: # BLUE
+                            self.light_data = 'B'
+                        elif self.index_light == 4: # WHITE
+                            self.light_data = 'RGB'
+                        elif self.index_light > 4:
+                            self.light_data = 'RGBOFF'
+                            self.index_light = 0
 
-                if key_2:
-                    if self.index_water > 0:
-                        self.index_water = 0
-                    else:
-                         self.index_water = 1
-                    self.water_data = self.control_water[self.index_water]
+                        self.control_chamber(self.light_data)
+                        self.timer.activate()
 
-                    self.control_chamber(self.water_data)
-                    self.have_to_water = 'on'
-                    self.timer.activate()
+                    if key_2:
+                        if self.index_water > 0:
+                            self.index_water = 0
+                        else:
+                             self.index_water = 1
+                        self.water_data = self.control_water[self.index_water]
 
-                if key_3:
-                    if self.index_vent > 0:
-                        self.index_vent = 0
-                    else:
-                        self.index_vent = 1
-                    self.vent_data = self.control_vent[self.index_vent]
+                        self.control_chamber(self.water_data)
+                        self.have_to_water = 'on'
+                        self.timer.activate()
 
-                    self.control_chamber(self.vent_data)
-                    self.have_to_vent = 'on'
-                    self.timer.activate()
+                    if key_3:
+                        if self.index_vent > 0:
+                            self.index_vent = 0
+                        else:
+                            self.index_vent = 1
+                        self.vent_data = self.control_vent[self.index_vent]
+
+                        self.control_chamber(self.vent_data)
+                        self.have_to_vent = 'on'
+                        self.timer.activate()
 
             if self.index == 1 or self.index == 2:
                 if key_1 and self.date_index > -len(self.options_dates):
@@ -255,7 +268,6 @@ class DashBoard:
                     self.timer.activate()
 
                 if key_2:
-                    print('key2 pressed')
                     self.get__graph()
                     self.timer.activate()
 
@@ -266,11 +278,11 @@ class DashBoard:
                     self.timer.activate()
 
     def control_chamber(self, data):
-        url = "http://113.198.63.26:14110/run_code"
-        data = {'data': data}
-        headers = {'Content-Type': 'application/json'}
+        url = "http://192.168.50.43/"
+        url = url + data
+        response = requests.get(url)
 
-        response = requests.post(url, data=json.dumps(data), headers=headers)
+        print(response.status_code, data)
 
     def show_entry(self, text_surf, top):
         # title
@@ -380,7 +392,6 @@ class DashBoard:
             else:
                 color = 'black'
             text_surf = self.font.render(item, False, color)
-            print(item)
 
             self.data_surf.append(text_surf)
             self.data_height = text_surf.get_height() + 2*self.space
@@ -450,7 +461,7 @@ class DashBoard:
                     self.show_entry_pd(text_surf, top)
 
                 # control
-                light_btn = self.control_status[self.index_light]
+                light_btn = self.led_control_status[self.index_light]
                 water_btn = self.control_status[self.index_water]
                 vent_btn = self.control_status[self.index_vent]
 
@@ -563,7 +574,7 @@ class DashBoard:
             #         self.show_entry_updated_time(f'UPDATED TIME : {self.get_data["Date"]} {self.get_data["Time"]}', color='black')
 
 
-        if self.player.pos_layer == 'greenhouse':
+        if self.player.pos_layer == 'lab_api':
             if self.index == 0:
                 for title_index, title_surf in enumerate(self.title_surf):
                     top = self.main_rect.top + title_index * (self.main_rect.height / 2 )
@@ -597,7 +608,46 @@ class DashBoard:
                 # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 # self.show_entry_img(self.chamber_lux, top)
 
-        if self.player.pos_layer == 'lab_208':
+        if self.player.pos_layer == 'grh_api':
+            if self.index == 0:
+                for title_index, title_surf in enumerate(self.title_surf):
+                    top = self.main_rect.top + title_index * (self.main_rect.height / 2 )
+                    self.show_entry(title_surf, top)
+
+                for title_index, surf in enumerate((self.tdata_surf, self.tcontrol_surf)):
+                    top = self.main_rect.top + title_index * (self.main_rect.height / 2 )  + self.space
+                    self.show_entry_p(surf, top)
+
+
+                for text_index, text_surf in enumerate([self.data_208_surf]):
+                    top = self.main_rect.top + self.space + self.ptitle_rect.height + self.space
+                    self.show_entry_pd(text_surf, top)
+
+                for text_index, text_surf in enumerate([self.text_surf]):
+                    top = self.main_rect.top + self.main_rect.height/2 + self.space + self.ptitle_rect.height + self.space
+                    self.show_entry_pd(text_surf, top)
+
+
+            elif self.index == 1:
+                date_surf = self.date_surf[self.date_index]
+                top = self.bg_rect.top + self.space*4
+                self.show_entry_date(date_surf, top)
+                #
+                # self.chamber_t_h = f'..\graphics\chamber_graph\chamber_t&h.png'
+                # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
+                # self.show_entry_img(self.chamber_t_h, top)
+
+            elif self.index == 2:
+                date_surf = self.date_surf[self.date_index]
+                top = self.bg_rect.top + self.space*4
+                self.show_entry_date(date_surf, top)
+
+                # self.chamber_lux = f'..\graphics\chamber_graph\chamber_lux.png'
+                # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
+                # self.show_entry_img(self.chamber_lux, top)
+
+
+        if self.player.pos_layer == 'buan':
             if self.index == 0:
                 for title_index, title_surf in enumerate(self.title_surf):
                     top = self.main_rect.top + title_index * (self.main_rect.height / 2 )

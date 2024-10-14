@@ -123,12 +123,14 @@ class Level:
 
 		# lab 공간 세팅
 		for x, y, surf in tmx_data.get_layer_by_name('Lab Decoration').tiles():
-			Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), [self.all_sprites_map, self.collision_sprites])
+			Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map])
+
+
 
 		# Player
 		for obj in tmx_data.get_layer_by_name('Player'):
 
-			if obj.name == 'lab_enter':
+			if obj.name == 'Start':
 				self.player = Player(
 					pos=(obj.x, obj.y),
 					group=self.all_sprites_map,
@@ -152,6 +154,16 @@ class Level:
 			if obj.name == 'lab_out':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
+
+			if obj.name == 'grh':
+				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+
+			if obj.name == 'grh_api':
+				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+
+
+			if obj.name == 'buan':
+				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
 		# 	if obj.name == 'Enter_gh1':
 		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
@@ -198,6 +210,10 @@ class Level:
 		# for x, y, surf in tmx_data.get_layer_by_name('wall').tiles():
 		# 	Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
 		#
+
+		for x, y, surf in tmx_data.get_layer_by_name('Grh Decoration').tiles():
+			Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
+
 		Generic(
 			pos = (0, 0),
 			surf = pygame.image.load(os.path.join(ALL_PATH, 'data/greenhouse_map.png')).convert_alpha(),  # ----> 배경 화면 사진

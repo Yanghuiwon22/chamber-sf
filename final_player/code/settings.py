@@ -9,7 +9,9 @@ TILE_SIZE = 16
 OFFSET_X = 0  # 필요에 따라 조정
 OFFSET_Y = 0  # 필요에 따라 조정
 
-LAB_ENTER = (2230, 605)
+LAB_ENTER = (2640, 560)
+
+GRH_ENTER = (2720, 1375)
 
 
 
@@ -98,7 +100,7 @@ LIGHTBLUE = (0, 155, 155)
 BGCOLOR = LIGHTBLUE
 
 # pos
-LAB_ENTER = (2230, 590)
+LAB_ENTER = (2230, 580)
 # GH2_START = (1600, 1344)
 # GH3_START = (4800, 1344)
 

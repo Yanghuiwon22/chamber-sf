@@ -58,6 +58,7 @@
             "scaleInDock": 1
         },
         "data/Tilesets/Crops.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "data/Tilesets/Fences.tsx": {
@@ -137,6 +138,9 @@
             "dynamicWrapping": true,
             "scaleInDock": 1
         },
+        "data/Tilesets/grh.tsx": {
+            "dynamicWrapping": true
+        },
         "data/Tilesets/interaction.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1,
@@ -210,7 +214,7 @@
         }
     },
     "last.externalTilesetPath": "C:/code/chamber-sf/final_player/data/Tilesets",
-    "last.imagePath": "C:/code/chamber-sf/final_player/graphics/lab",
+    "last.imagePath": "C:/code/chamber-sf/final_player/graphics/grh",
     "map.height": 100,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,

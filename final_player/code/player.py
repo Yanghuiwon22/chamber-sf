@@ -225,12 +225,12 @@ class Player(pygame.sprite.Sprite):
 					if collided_interaction_sprite[0].name == "lab":
 						self.sleep = True
 						self.pos_layer = 'lab'
-						self.to_go = LAB_ENTER[0], LAB_ENTER[1]
+						# self.to_go = LAB_ENTER[0], LAB_ENTER[1]
+						self.to_go = 2640, 560
 						self.before_go = self.pos.x, self.pos.y
 
 					# lab 안 lab_chamber 대시보드 설정
 					if collided_interaction_sprite[0].name == "lab_chamber":
-						print('lab_chamber 충돌')
 						self.pos_layer = 'lab_chamber'
 						self.toggle_dashboard()
 
@@ -243,6 +243,27 @@ class Player(pygame.sprite.Sprite):
 					if collided_interaction_sprite[0].name == "lab_out":
 						self.sleep = True
 						self.to_go = self.before_go
+
+					# greenhouse intertaction 설정하기
+					if collided_interaction_sprite[0].name == "grh":
+						self.sleep = True
+						self.pos_layer = 'grh'
+						self.to_go = GRH_ENTER[0], GRH_ENTER[1]
+						self.before_go = self.pos.x, self.pos.y
+
+					if collided_interaction_sprite[0].name == "grh_api":
+						self.pos_layer = 'grh_api'
+						self.toggle_dashboard()
+
+					if collided_interaction_sprite[0].name == "grh_out":
+						self.sleep = True
+						self.to_go = self.before_go
+
+
+					if collided_interaction_sprite[0].name == "buan":
+						self.pos_layer = 'grh_api'
+						self.toggle_dashboard()
+
 
 
 				#
