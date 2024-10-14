@@ -675,25 +675,31 @@ class DashBoard:
 
 
             elif self.index == 1:
+                # 2페이지 구성
+                # 2페이지 구성 - 제목
+                text_surf = 'Per-plot soil moisture'
+                title_surf = self.font.render(text_surf, False, 'black')
+
+                left = (self.bg_rect.left + self.bg_rect.width/2) - title_surf.get_width()/2
+                top = self.bg_rect.top + self.space * 4
+
+                self.show_field_text(title_surf, left, top)
+
+                # 2페이지 구성 - 필지 텍스트
                 for i in range(1,9): # 1, 2, 3, 4
-                    field_surf = f'Field {i}'
+                    text_surf = f'Field {i}'
                     if i <= 4:
-                        top = self.bg_rect.top + self.space*4
+                        top = self.bg_rect.top + self.space*4 + title_surf.get_height() + self.space*2
+                        left = self.bg_rect.left + (i - 1) * (self.bg_rect.width / 4)
                     else:
-                        top = self.bg_rect.top + (self.bg_rect.height)/2 + self.space*4
+                        # (self.bg_rect.height - title_surf.get_height())/2
 
-                left = self.bg_rect.left + (i-1) * (self.bg_rect.width/4)
-                field_surf = Font
-                self.show_field_text(field_surf, left, top)
+                        top = self.bg_rect.top + self.space*4 + title_surf.get_height() + self.space*2 + (self.bg_rect.height - title_surf.get_height())/2
+                        left = self.bg_rect.left + ((i-4) - 1) * (self.bg_rect.width / 4)
 
-
-                # date_surf = self.date_surf[self.date_index]
-                # top = self.bg_rect.top + self.space*4
-                self.show_entry_date(date_surf, top)
-                #
-                # self.chamber_t_h = f'..\graphics\chamber_graph\chamber_t&h.png'
-                # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
-                # self.show_entry_img(self.chamber_t_h, top)
+                    field_surf = self.font.render(text_surf, False, 'red')
+                    print(text_surf, self.bg_rect.left, left, self.bg_rect.top, top)
+                    self.show_field_text(field_surf, left, top)
 
             elif self.index == 2:
                 pass

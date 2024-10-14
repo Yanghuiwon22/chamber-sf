@@ -185,10 +185,10 @@
         },
         "data/greenhouse_map.tmx": {
             "scale": 1.5,
-            "selectedLayer": 11,
+            "selectedLayer": 19,
             "viewCenter": {
-                "x": 2054.6666666666665,
-                "y": 520
+                "x": 2592.6666666666665,
+                "y": 2207.333333333333
             }
         },
         "data/greenhouse_map.tmx#Plant Decoration": {
@@ -225,10 +225,10 @@
     ],
     "project": "untitled.tiled-project",
     "recentFiles": [
+        "data/greenhouse_map.tmx",
         "data/Tilesets/interaction.tsx",
         "data/Tilesets/lab.tsx",
         "data/Tilesets/test_bush.tsx",
-        "data/greenhouse_map.tmx",
         "data/basemap.tmx",
         "data/chamber-sf-map.tmx",
         "data/Tilesets/Plant Decoration.tsx",
