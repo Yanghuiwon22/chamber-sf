@@ -274,7 +274,9 @@ class Player(pygame.sprite.Sprite):
 						self.sleep = True
 						self.to_go = self.before_go
 
-
+					if collided_interaction_sprite[0].name == 'aws_lab':
+						self.pos_layer = 'aws_lab'
+						self.toggle_dashboard()
 
 				#
 				# 	if collided_interaction_sprite[0].name == "Enter_gh2":

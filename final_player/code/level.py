@@ -174,51 +174,12 @@ class Level:
 			if obj.name == 'buan_out':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
-		# 	if obj.name == 'Enter_gh1':
-		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-		#
-		# 	if obj.name == 'Enter_gh2':
-		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-		#
-		# 	if obj.name == 'Enter_gh3':
-		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-		#
-		# 	if obj.name == 'gh1_start':
-		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-		#
-		# 	if obj.name == 'gh2_start':
-		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-		#
-		# 	if obj.name == 'gh3_start':
-		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-		#
-		# 	if obj.name == 'gh1_out':
-		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-		#
-		# 	if obj.name == 'gh2_out':
-		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-		#
-		# 	if obj.name == 'gh3_out':
-		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-		#
-		# 	if obj.name == 'dashboard1':
-		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-		#
-		# 	if obj.name == 'dashboard2':
-		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-		#
-		# 	if obj.name == 'dashboard3':
-		# 		Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-		#
-		#
-		# # collion tilese
-		# for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
-		# 	Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
-		#
-        # # wall
-		# for x, y, surf in tmx_data.get_layer_by_name('wall').tiles():
-		# 	Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
-		#
+
+			if obj.name == 'aws_lab':
+				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+
+
+
 
 		for x, y, surf in tmx_data.get_layer_by_name('Grh Decoration').tiles():
 			Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])

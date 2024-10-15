@@ -61,6 +61,89 @@ class Get_data:
             # return output
             return [output['day_temp'], output['day_hum'], '--']
 
+    def get_grh_heyhome(self):
+        url = 'http://web01.taegon.kr:7600/today'
+
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            result = response.content
+            dic_lab = json.loads(result.decode('utf-8'))['grh']
+            df = pd.DataFrame(dic_lab)
+            df['hour'] = df['time'].apply(lambda x: x.split(':')[0])
+
+            print(df)
+
+            fig, ax1 = plt.subplots(figsize=(10, 6))
+
+            # 첫 번째 Y축 (온도)
+            ax1.plot(df['time'], df['temp'], color='red', marker='o', label='Temperature (°C)')
+            ax1.set_xlabel('Time', fontweight='bold', fontsize=20)
+            ax1.set_ylabel('Temperature (°C)', color='red', fontweight='bold', fontsize=20)
+            ax1.tick_params(axis='y', labelcolor='red')
+
+            ax1.set_xticks(df['time'][::6])
+            ax1.set_xticklabels(df['time'][::6], rotation=45, fontweight='bold', fontsize=20)  # X축 레이블 회전
+
+            ax1.set_yticks(df['temp'])
+            ax1.set_yticklabels(df['temp'], rotation=45, fontweight='bold', fontsize=20)  # X축 레이블 회전
+
+            # 두 번째 Y축 (습도)
+            ax2 = ax1.twinx()  # 두 번째 Y축 추가
+            ax2.plot(df['time'], df['humid'], color='blue', marker='o', label='Humidity (%)')
+            ax2.set_ylabel('Humidity (%)', color='blue', fontweight='bold', fontsize=20)
+
+            ax2.set_yticks(df['humid'])
+            ax2.set_yticklabels(df['humid'], fontsize=15)  # X축 레이블 회전
+            ax2.tick_params(axis='y', labelcolor='blue')
+
+            # 그래프 타이틀 설정 및 레이아웃 조정
+            fig.tight_layout()
+            plt.savefig('../graphics/temperature_humidity_graph_grh.png')
+
+
+    def get_lab_heyhome(self):
+        url = 'http://web01.taegon.kr:7600/today'
+
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            result = response.content
+            dic_lab = json.loads(result.decode('utf-8'))['lab']
+            df = pd.DataFrame(dic_lab)
+            df['hour'] = df['time'].apply(lambda x: x.split(':')[0])
+
+            print(df)
+
+            fig, ax1 = plt.subplots(figsize=(10, 6))
+
+            # 첫 번째 Y축 (온도)
+            ax1.plot(df['time'], df['temp'], color='red', marker='o', label='Temperature (°C)')
+            ax1.set_xlabel('Time', fontweight='bold', fontsize=20)
+            ax1.set_ylabel('Temperature (°C)', color='red', fontweight='bold', fontsize=20)
+            ax1.tick_params(axis='y', labelcolor='red')
+
+            ax1.set_xticks(df['time'][::6])
+            ax1.set_xticklabels(df['time'][::6], rotation=45, fontweight='bold', fontsize=20)  # X축 레이블 회전
+
+            ax1.set_yticks(df['temp'])
+            ax1.set_yticklabels(df['temp'], rotation=45, fontweight='bold', fontsize=20)  # X축 레이블 회전
+
+            # 두 번째 Y축 (습도)
+            ax2 = ax1.twinx()  # 두 번째 Y축 추가
+            ax2.plot(df['time'], df['humid'], color='blue', marker='o', label='Humidity (%)')
+            ax2.set_ylabel('Humidity (%)', color='blue', fontweight='bold', fontsize=20)
+
+            ax2.set_yticks(df['humid'])
+            ax2.set_yticklabels(df['humid'], fontsize=15)  # X축 레이블 회전
+
+            ax2.tick_params(axis='y', labelcolor='blue')
+
+            # 그래프 타이틀 설정 및 레이아웃 조정
+            fig.tight_layout()
+            plt.savefig('../graphics/temperature_humidity_graph.png')
+        # return df
+
     def get_buan_soilmoisture_data(self):
         url = 'http://web01.taegon.kr:7500/api/zentra/data/plot'
 
@@ -100,10 +183,10 @@ class Get_data:
                 now_time = data.split(',')[0]
                 ta = data.split(',')[1]
                 ws = data.split(',')[2]
-                wdKo = data.split(',')[3]
-                wwKo = data.split(',')[4]
+                wd = data.split(',')[5]
+                ww = data.split(',')[6]
 
-                for name, value in {'updated_time': now_time, 'temperature': ta, 'wind power': ws, 'wind direction': wdKo, 'weather_status':wwKo}.items():
+                for name, value in {'updated_time': now_time, 'temperature': ta, 'wind power': ws, 'wind direction': ww, 'weather_status':wd}.items():
 
                     value = value.split('": ')[-1]
                     value = value.replace('"', '')
@@ -177,7 +260,7 @@ class Get_data:
 
     # 미니챔버 데이터 가져오기
     def chamber_data(self):
-        for i in range(1,3):
+        for i in [1, 2, 4]:
             url = f'https://api.thingspeak.com/channels/1999884/fields/{i}.json?api_key=TYCQQ3CFQME0PITO&results=2'
 
             output = {}
@@ -191,6 +274,9 @@ class Get_data:
                 elif i == 2:
                     df['hum'] = response.json()['feeds'][0]['field2']
 
+                elif i == 4:
+                    df['lux'] = response.json()['feeds'][0]['field4']
+
         df = df.iloc[0:1]
         df.insert(loc=0, column='Time', value=df['created_at'].apply(lambda x: x.split('T')[1].split('Z')[0]))
         df.insert(loc=0, column='Date', value=df['created_at'].apply(lambda x: x.split('T')[0]))
@@ -202,7 +288,7 @@ class Get_data:
 
         output['temp'] = str(int(float(df['temp'].values[0])))
         output['hum'] = str(int(float(df['hum'].values[0])))
-        output['lux'] = 'None'
+        output['lux'] = str(int(float(df['lux'].values[0])))
 
         # 실시간 데이터가 반영되지 않을때 (과거 데이터를 수신할 때)
         set_time = datetime.strptime(output['Time'], '%H:%M:%S')
@@ -388,14 +474,88 @@ class Get_data:
         plt.savefig(os.path.join(ALL_PATH, f'graphics/chamber_graph/week_graph.png'))
 
 
+    def aws_data(self):
+        df = pd.DataFrame()
+        for i in range(1,8):  # 수정
+            url = 'https://thingspeak.mathworks.com/channels/2328695/field/'
+            url += f'{i}.json'
+            response = requests.get(url)
+
+            if response.status_code == 200:
+                result = response.json()['feeds']
+
+                result_df = pd.DataFrame(result)
+                df[f'field{i}'] = result_df['field' + str(i)]
+
+        df = df.rename(columns={'field1': 'temp', 'field2': 'hum', 'field3': 'lux', 'field4': 'wind_dir', 'field5': 'wind_speed', 'field6': 'rainfall', 'field7': 'battery_power'})
+        df.insert(0, 'Time', pd.to_datetime(result_df['created_at']) + pd.Timedelta(hours=9))
+        df = df.iloc[-30:]
+
+        # df['time'] = df['Time'].astype(str).apply(lambda x: x.split(' ')[1].split('+')[0])
+        df['time'] = pd.to_datetime(df['Time'].astype(str).apply(lambda x: x.split(' ')[1].split('+')[0]),
+                                    format='%H:%M:%S').dt.strftime('%H:%M:%S')
+
+        df['temp'] = df['temp'].astype(float)
+        df['hum'] = df['hum'].astype(float)
+        print(df)
+        ############################ 그래프 그리기
+        fig, ax1 = plt.subplots(figsize=(10, 6))
+
+        # 첫 번째 Y축 (온도)
+        ax1.plot(df['time'], df['temp'], color='red', marker='o', label='Temperature (°C)')
+        ax1.set_xlabel('time', fontweight='bold', fontsize=20)
+        ax1.set_ylabel('Temperature (°C)', color='red', fontweight='bold', fontsize=20)
+        ax1.tick_params(axis='y', labelcolor='red')
+
+        ax1.set_xticks(df['time'][::6])
+        ax1.set_yticks(np.arange(-15, 51, 10))
+
+        ax1.set_xticklabels(df['time'][::6], fontweight='bold', fontsize=15)  # X축 레이블 회전
+
+        # 두 번째 Y축 (습도)
+        ax2 = ax1.twinx()  # 두 번째 Y축 추가
+        ax2.plot(df['time'], df['hum'], color='blue', marker='o', label='Humidity (%)')
+        ax2.set_ylabel('Humidity (%)', color='blue', fontweight='bold', fontsize=20)
+
+        ax2.set_yticks(np.arange(0, 101, 10))
+
+        ax2.tick_params(axis='y', labelcolor='blue')
+
+        # 그래프 타이틀 설정 및 레이아웃 조정
+        fig.tight_layout()
+        plt.savefig('../graphics/aws_temp_hum.png')
 
 
+        # lux
+        fig, ax1 = plt.subplots(figsize=(10, 6))
 
-#
+        # 첫 번째 Y축 (온도)
+        ax1.plot(df['time'], df['lux'], color='green', marker='o', label='Lux')
+        ax1.set_xlabel('time', fontweight='bold', fontsize=20)
+        ax1.set_ylabel('Temperature (°C)', color='red', fontweight='bold', fontsize=20)
+        ax1.tick_params(axis='y', labelcolor='red')
+
+        ax1.set_xticks(df['time'][::6])
+        ax1.set_yticks(np.arange(-15, 51, 10))
+
+        ax1.set_xticklabels(df['time'][::6], fontweight='bold', fontsize=15)  # X축 레이블 회전
+
+        # 두 번째 Y축 (습도)
+        ax2 = ax1.twinx()  # 두 번째 Y축 추가
+        ax2.plot(df['time'], df['hum'], color='blue', marker='o', label='Humidity (%)')
+        ax2.set_ylabel('Humidity (%)', color='blue', fontweight='bold', fontsize=20)
+
+        ax2.set_yticks(np.arange(0, 101, 10))
+
+        ax2.tick_params(axis='y', labelcolor='blue')
+
+        return df
+
 if __name__ == '__main__':
     data = Get_data()
-    data.get_buan_soilmoisture_data()
-    data.get_buan_weather_data()
+    # data.get_buan_soilmoisture_data()
+    # data.get_buan_weather_data()
+    data.aws_data()
 #     # data.draw_week_data()
 #     data.get_chamber_graph('2024-05-28', 't_h')
 #     data.get_chamber_graph('2024-05-28', 'lux')

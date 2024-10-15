@@ -35,6 +35,9 @@ class DashBoard:
         self.get_greenhouse_data = get_data.get_gh_data()
         self.get_buan_soilmoisture_data = get_data.get_buan_soilmoisture_data()
         self.get_buan_weather_data = get_data.get_buan_weather_data()
+        self.aws_data = get_data.aws_data()
+        self.lab_heyhome_graph = get_data.get_lab_heyhome()
+        self.grh_heyhome_graph = get_data.get_grh_heyhome()
 
         self.livedata_mini_chamber = get_data.livedata_mini_chamber
         # self.livedata_mini_chamber = False
@@ -396,10 +399,15 @@ class DashBoard:
         self.data_height = 0
 
         for item in [self.options_data['temp'], self.options_data['hum'], self.options_data['lux']]: #----------> 실시간 데이터 출력
-            if not self.livedata_mini_chamber:  # ----------> 실시간 데이터가 아니면 빨간색으로 출력
-                color = 'red'
-            else:
-                color = 'black'
+
+            color = 'black'
+            if item == self.options_data['temp']:
+                if int(self.options_data['temp']) >= 40:
+                    color = 'red'
+
+                elif int(self.options_data['temp']) < -10:
+                    color = 'blue'
+
             text_surf = self.font.render(item, False, color)
 
             self.data_surf.append(text_surf)
@@ -456,6 +464,7 @@ class DashBoard:
 
         if self.player.pos_layer == 'lab_chamber':
             if self.index == 0:
+                # 실시간 데이터
                 for title_index, title_surf in enumerate(self.title_surf):
                     top = self.main_rect.top + title_index * (self.main_rect.height / 2 )
                     self.show_entry(title_surf, top)
@@ -463,7 +472,6 @@ class DashBoard:
                 for title_index, surf in enumerate((self.tdata_surf, self.tcontrol_surf)):
                     top = self.main_rect.top + title_index * (self.main_rect.height / 2 )  + self.space
                     self.show_entry_p(surf, top)
-
 
                 for text_index, text_surf in enumerate([self.data_surf]):
                     top = self.main_rect.top + self.space + self.ptitle_rect.height + self.space
@@ -488,28 +496,23 @@ class DashBoard:
 
             elif self.index == 1:
                 # 온습도 그래프 표시
-                self.mini_chamber_graph = False
-                if not self.mini_chamber_graph:
-                    file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/fake_t_h.png')
-                    date_text = '2024-05-23'
-                    date_surf = self.font.render(date_text, False, 'red')
-                    top = self.bg_rect.top + self.space * 4
-                    self.show_entry_date(date_surf, top)
-                else:
-                    file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/chamber_t_h.png')
-                    date_text = (datetime.now().date() - timedelta(days=1)).strftime('%Y-%m-%d')
-                    date_surf = self.font.render(date_text, False, 'black')
-                    top = self.bg_rect.top + self.space * 4
-                    self.show_entry_date(date_surf, top)
 
+                title_text = 'Temperature and Humidity over Time'
+                title_surf = self.font.render(title_text, False, 'black')
 
-                # 날짜 표시
-                top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
-                self.show_entry_img(file_path, top)
+                top = self.bg_rect.top + self.space * 4
+                left = self.bg_rect.left + self.bg_rect.width / 2 - title_surf.get_width() / 2
 
-                if not self.mini_chamber_graph:
-                    self.show_entry_fake(top=self.bg_rect.bottom + self.space)
+                self.display_surface.blit(title_surf, (left, top))
 
+                # 2페이지 구성 - 그래프 이미지
+                img = pygame.image.load('../graphics/aws_temp_hum.png')
+                img = pygame.transform.scale(img, (700, 0.6 * 700))
+
+                top_img = self.bg_rect.top + self.space * 4 + title_surf.get_height()
+                left_img = self.bg_rect.left + self.bg_rect.width / 2 - img.get_width() / 2
+
+                self.display_surface.blit(img, (left_img, top_img))
             elif self.index == 2:
                 # 광 그래프 표시
                 self.mini_chamber_graph = False
@@ -603,10 +606,25 @@ class DashBoard:
                     self.show_entry_pd(text_surf, top)
 
             elif self.index == 1:
-                # 현재 날짜를 기준으로 -1 일
-                date_surf = self.date_surf[self.date_index]
-                top = self.bg_rect.top + self.space*4
-                self.show_entry_date(date_surf, top)
+                # 2페이지 구성 - 그래프 제목
+                self.lab_heyhome_graph
+
+                title_text = 'Temperature and Humidity over Time'
+                title_surf = self.font.render(title_text, False, 'black')
+
+                top = self.bg_rect.top + self.space * 4
+                left = self.bg_rect.left + self.bg_rect.width/2 - title_surf.get_width()/2
+
+                self.display_surface.blit(title_surf, (left, top))
+
+                # 2페이지 구성 - 그래프 이미지
+                img = pygame.image.load('../graphics/temperature_humidity_graph.png')
+                img = pygame.transform.scale(img, (700, 0.6*700))
+
+                top_img = self.bg_rect.top + self.space * 4 + title_surf.get_height()
+                left_img = self.bg_rect.left + self.bg_rect.width/2 - img.get_width()/2
+
+                self.display_surface.blit(img, (left_img, top_img))
 
             elif self.index == 2:
                 date_surf = self.date_surf[self.date_index]
@@ -638,22 +656,34 @@ class DashBoard:
 
 
             elif self.index == 1:
-                date_surf = self.date_surf[self.date_index]
-                top = self.bg_rect.top + self.space*4
-                self.show_entry_date(date_surf, top)
-                #
-                # self.chamber_t_h = f'..\graphics\chamber_graph\chamber_t&h.png'
-                # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
-                # self.show_entry_img(self.chamber_t_h, top)
+                # 2페이지 구성 - 그래프 제목
+                self.grh_heyhome_graph
+
+                title_text = 'Temperature and Humidity over Time'
+                title_surf = self.font.render(title_text, False, 'black')
+
+                top = self.bg_rect.top + self.space * 4
+                left = self.bg_rect.left + self.bg_rect.width / 2 - title_surf.get_width() / 2
+
+                self.display_surface.blit(title_surf, (left, top))
+
+                # 2페이지 구성 - 그래프 이미지
+                img = pygame.image.load('../graphics/temperature_humidity_graph_grh.png')
+                img = pygame.transform.scale(img, (700, 0.6 * 700))
+
+                top_img = self.bg_rect.top + self.space * 4 + title_surf.get_height()
+                left_img = self.bg_rect.left + self.bg_rect.width / 2 - img.get_width() / 2
+
+                self.display_surface.blit(img, (left_img, top_img))
 
             elif self.index == 2:
-                date_surf = self.date_surf[self.date_index]
-                top = self.bg_rect.top + self.space*4
-                self.show_entry_date(date_surf, top)
+                    date_surf = self.date_surf[self.date_index]
+                    top = self.bg_rect.top + self.space*4
+                    self.show_entry_date(date_surf, top)
 
-                # self.chamber_lux = f'..\graphics\chamber_graph\chamber_lux.png'
-                # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
-                # self.show_entry_img(self.chamber_lux, top)
+                    # self.chamber_lux = f'..\graphics\chamber_graph\chamber_lux.png'
+                    # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
+                    # self.show_entry_img(self.chamber_lux, top)
 
         if self.player.pos_layer == 'buan_api':
             if self.index == 0:
@@ -729,21 +759,110 @@ class DashBoard:
                 # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 # self.show_entry_img(self.chamber_lux, top)
 
+        if self.player.pos_layer == 'aws_lab':
+            if self.index == 0:
+                # 1페이지 구성
+                # 1페이지 구성 - 제목
+                text_surf = 'JBNU AWS weather data'
+                title_surf = self.font.render(text_surf, False, 'black')
+
+                left = (self.bg_rect.left + self.bg_rect.width / 2) - title_surf.get_width() / 2
+                top = self.bg_rect.top + self.space * 4
+
+                self.display_surface.blit(title_surf, (left, top))
+
+                # 1페이지 구성 - 실시간 데이터 텍스트
+                aws_df = self.aws_data
+                realtime_aws = aws_df.iloc[-1]
+
+                realtime_aws_dic = {'updated_time' : realtime_aws['Time'],
+                                    'temp' : realtime_aws['temp'],
+                                    'hum' : realtime_aws['hum'],
+                                    'wind' : f"{realtime_aws['wind_speed']}({ realtime_aws['wind_dir']})",
+                                    'lux' : realtime_aws['lux'],
+                                    'rainfall' : realtime_aws['rainfall']}
+                i = 0
+                for name, value in realtime_aws_dic.items():
+                    if name != 'updated_time':
+                        text_surf = self.font.render(name, False, 'brown')
+                        data_surf = self.font.render(value, False, 'black')
+                        if name == 'temp' or name == 'hum' or name == 'wind':
+                            top = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2
+                            left = self.bg_rect.left + (i - 1) * (self.bg_rect.width / 3) + (self.bg_rect.width / 3)/2 - text_surf.get_width()/2
+
+                            left_data = self.bg_rect.left + (i - 1) * (self.bg_rect.width / 3) + (self.bg_rect.width / 3)/2 - data_surf.get_width()/2
+                            top_data = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2 + text_surf.get_height() + self.space * 2
 
 
+                        if name == 'rainfall' or name == 'lux':
+                            if name == 'lux':
+                                i = 1
 
+                            print(name, i)
+                            top = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2 + (self.bg_rect.height - title_surf.get_height())/2
+                            left = self.bg_rect.left + (i - 1) * (self.bg_rect.width / 2) + (self.bg_rect.width / 2)/2 - text_surf.get_width()/2
 
+                            left_data = self.bg_rect.left + (i - 1) * (self.bg_rect.width / 2) + (self.bg_rect.width / 2) / 2 - data_surf.get_width() / 2
+                            top_data = self.bg_rect.top + self.space * 4 + self.space * 2 + (self.bg_rect.height - title_surf.get_height())/2 + text_surf.get_height() + self.space * 2
 
+                        self.display_surface.blit(text_surf, (left, top))
+                        self.display_surface.blit(data_surf, (left_data, top_data))
 
+                    i += 1
+                    
+                # 1페이지 구성 - 날짜
+                date_text = str(realtime_aws['Time']).split('+')[0]
+                date_surf = self.font.render(date_text, False, 'black')
 
+                top = self.bg_rect.bottom - date_surf.get_height() - self.space*2
+                left = self.bg_rect.right - date_surf.get_width() - self.space*2
+                # pygame.draw.rect(self.display_surface, 'red', self.bg_rect)
 
+                self.display_surface.blit(date_surf, (left, top))
 
+                # self.show_field_text(date_surf, text_rect.left, text_rect.top)
 
+            elif self.index == 1:
+                # 2페이지 구성
+                # 2페이지 구성 - 제목
+                pass
+                # text_surf = 'Per-plot soil moisture'
+                # title_surf = self.font.render(text_surf, False, 'black')
+                #
+                # left = (self.bg_rect.left + self.bg_rect.width / 2) - title_surf.get_width() / 2
+                # top = self.bg_rect.top + self.space * 4
+                #
+                # self.show_field_text(title_surf, left, top)
+                #
+                # # 2페이지 구성 - 필지 텍스트 & 토양수분 데이터
+                # for i in range(1, 9):  # 1, 2, 3, 4
+                #     text_surf = f'Field {i}'
+                #     field_surf = self.font.render(text_surf, False, 'brown')
+                #     text_surf_data = self.get_buan_soilmoisture_data[text_surf]
+                #     data_surf = self.font.render(text_surf_data, False, 'black')
+                #
+                #     if i <= 4:
+                #         top = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2
+                #         left = self.bg_rect.left + (i - 1) * (self.bg_rect.width / 4)
+                #
+                #         top_data = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2 + field_surf.get_height() + self.space * 2
+                #     else:
+                #         top = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2 + (
+                #                 self.bg_rect.height - title_surf.get_height()) / 2
+                #         left = self.bg_rect.left + ((i - 4) - 1) * (self.bg_rect.width / 4)
+                #
+                #         top_data = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2 + (
+                #                 self.bg_rect.height - title_surf.get_height()) / 2 + field_surf.get_height() + self.space * 2
+                #
+                #     self.show_field_text(field_surf, left, top)
+                #     self.show_field_text(data_surf, left, top_data)
 
+            elif self.index == 2:
+                pass
+                # date_surf = self.date_surf[self.date_index]
+                # top = self.bg_rect.top + self.space*4
+                # self.show_entry_date(date_surf, top)
 
-
-
-
-
-
-
+                # self.chamber_lux = f'..\graphics\chamber_graph\chamber_lux.png'
+                # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
+                # self.show_entry_img(self.chamber_lux, top)
