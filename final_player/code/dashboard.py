@@ -39,8 +39,11 @@ class DashBoard:
         self.lab_heyhome_graph = get_data.get_lab_heyhome()
         self.grh_heyhome_graph = get_data.get_grh_heyhome()
 
-        self.livedata_mini_chamber = get_data.livedata_mini_chamber
-        # self.livedata_mini_chamber = False
+        self.lab_error = get_data.lab_error
+
+
+        # self.livedata_mini_chamber = get_data.livedata_mini_chamber
+        self.livedata_mini_chamber = False
 
         # control
         self.index_light = 0
@@ -129,16 +132,16 @@ class DashBoard:
             text_surf = self.font.render(text, False, 'black')
             self.text_surf.append(text_surf)
             self.text_height += 2*self.padding + text_surf.get_height()
-
-        for item in self.options_dates:
-            if not self.livedata_mini_chamber:
-                color = 'red'
-            else:
-                color = 'black'
-            text_surf = self.font.render(item, False, color)
-            self.date_surf.append(text_surf)
-            self.date_height += 2*self.padding + text_surf.get_height()
-
+        #
+        # for item in self.options_dates:
+        #     if not self.livedata_mini_chamber:
+        #         color = 'red'
+        #     else:
+        #         color = 'black'
+        #     text_surf = self.font.render(item, False, color)
+        #     self.date_surf.append(text_surf)
+        #     self.date_height += 2*self.padding + text_surf.get_height()
+        #
 
 
         for item in self.options_pcontent:
@@ -223,8 +226,17 @@ class DashBoard:
 
             if self.index == 0:
                 if self.player.pos_layer == 'lab_chamber':
+                    # print(f"self.options_data \n {self.options_data['light']}")
+                    # if int(self.options_data['light']) >= 40:
+                    #     self.index_light = 1
+                    #
+                    # if int(self.options_data['light']) < -15:
+                    #     self.index_light = 3
+
                     if key_1:
                         self.index_light += 1
+
+
 
                         if self.index_light == 1:  # RED
                             self.light_data = 'R'
@@ -403,16 +415,21 @@ class DashBoard:
             color = 'black'
             if item == self.options_data['temp']:
                 if int(self.options_data['temp']) >= 40:
+                    self.lab_error = True
                     color = 'red'
 
-                elif int(self.options_data['temp']) < -10:
+                elif int(self.options_data['temp']) < 0:
                     color = 'blue'
+                    self.lab_error = True
+                else:
+                    self.lab_error = False
 
             text_surf = self.font.render(item, False, color)
 
             self.data_surf.append(text_surf)
             self.data_height = text_surf.get_height() + 2*self.space
         self.total_height += self.data_height
+        return self.lab_error
 
     def get_grh_data(self):
         self.options_grh_data = self.get_greenhouse_data
@@ -486,6 +503,7 @@ class DashBoard:
                     top = self.main_rect.top + (self.main_rect.height / 2 ) + self.ptitle_rect.height + (self.space)*2
                     self.show_entry_btn(btn_img, top)
 
+                self.livedata_mini_chamber = True
                 if not self.livedata_mini_chamber:
                     self.show_entry_fake(top=self.bg_rect.bottom + self.space)
                     self.show_entry_updated_time(f'UPDATED TIME : {self.get_data["Date"]} {self.get_data["Time"]}',
@@ -574,16 +592,7 @@ class DashBoard:
                 file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/week_graph.png')
                 top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
                 self.show_entry_img(file_path, top)
-            #
-            # if not self.livedata_mini_chamber:
-            #     self.show_entry_fake(top=self.bg_rect.bottom + self.space)
-            #
-            #     if self.index == 0:
-            #         self.show_entry_updated_time(f'UPDATED TIME : {self.get_data["Date"]} {self.get_data["Time"]}', color='red')
-            #
-            # else:
-            #     if self.index == 0:
-            #         self.show_entry_updated_time(f'UPDATED TIME : {self.get_data["Date"]} {self.get_data["Time"]}', color='black')
+
 
 
         if self.player.pos_layer == 'lab_api':
@@ -653,7 +662,6 @@ class DashBoard:
                 for text_index, text_surf in enumerate([self.text_surf]):
                     top = self.main_rect.top + self.main_rect.height/2 + self.space + self.ptitle_rect.height + self.space
                     self.show_entry_pd(text_surf, top)
-
 
             elif self.index == 1:
                 # 2페이지 구성 - 그래프 제목
@@ -785,7 +793,7 @@ class DashBoard:
                 for name, value in realtime_aws_dic.items():
                     if name != 'updated_time':
                         text_surf = self.font.render(name, False, 'brown')
-                        data_surf = self.font.render(value, False, 'black')
+                        data_surf = self.font.render(str(value), False, 'black')
                         if name == 'temp' or name == 'hum' or name == 'wind':
                             top = self.bg_rect.top + self.space * 4 + title_surf.get_height() + self.space * 2
                             left = self.bg_rect.left + (i - 1) * (self.bg_rect.width / 3) + (self.bg_rect.width / 3)/2 - text_surf.get_width()/2

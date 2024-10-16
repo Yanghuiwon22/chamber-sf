@@ -40,6 +40,7 @@ class Get_data:
 
         self.livedata_mini_chamber = False
         self.mini_chamber_graph = False
+        self.lab_error = False
 
     # 헤이홈 연구실 데이터 
     def get_lab_data(self):
@@ -60,6 +61,7 @@ class Get_data:
 
             # return output
             return [output['day_temp'], output['day_hum'], '--']
+
 
     def get_grh_heyhome(self):
         url = 'http://web01.taegon.kr:7600/today'
@@ -266,7 +268,7 @@ class Get_data:
             output = {}
             response = requests.get(url)
             if response.status_code == 200:
-                self.livedata_mini_chamber = True
+                self.livedata_mini_chamber = False
                 if i == 1:
                     df = pd.DataFrame(response.json()['feeds'])
                     df.rename(columns={'field1': 'temp'}, inplace=True)
@@ -295,7 +297,7 @@ class Get_data:
         if (datetime.now() - set_time).seconds/60 > 5 and output['Date'] != datetime.now().strftime('%Y-%m-%d'):
             self.livedata_mini_chamber = False
 
-        return {'Date' : output['Date'], 'Time' : output['Time'], 'temp' : output['temp'], 'hum' : output['hum'], 'lux' : output['lux']}
+        return {'Date' : output['Date'], 'Time' : output['Time'], 'temp': output['temp'], 'hum' : output['hum'], 'lux' : output['lux']}
 
 
     # def get_chamber_data(self):

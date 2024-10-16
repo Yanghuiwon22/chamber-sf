@@ -23,6 +23,7 @@ class Level:
 
 		self.get_data = Get_data()
 
+		self.get_chamber_data = self.get_data.chamber_data()  # ---> 미니챔버 실시간 데이터 로드
 
 		# sprite groups
 		self.all_sprites = CameraGroup()
@@ -57,8 +58,6 @@ class Level:
 		# greenhouse
 		self.gh_active = False
 
-
-
 		# dashboard
 		self.dashboard = DashBoard(self.player, self.toggle_dashboard, self.get_data)
 		self.dashboard_active = False
@@ -70,7 +69,7 @@ class Level:
 		# self.music.play(loops = -1)
 
 		self.player.game = game
-
+		self.lab_error = self.get_data.get_lab_heyhome()
 
 
 	def setup(self):
@@ -125,6 +124,13 @@ class Level:
 		for x, y, surf in tmx_data.get_layer_by_name('Lab Decoration').tiles():
 			Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
 
+		if int(self.get_chamber_data['temp']) >= 40:
+			for x, y, surf in tmx_data.get_layer_by_name('lab error').tiles():
+				Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map])
+
+		if int(self.get_chamber_data['temp']) <= 0:
+			for x, y, surf in tmx_data.get_layer_by_name('lab error2').tiles():
+				Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map])
 
 
 		# Player
@@ -139,8 +145,10 @@ class Level:
 					interaction=self.interaction_sprites,
 					soil_layer=self.soil_layer,
 					toggle_shop=self.toggle_shop,
-					toggle_dashboard=self.toggle_dashboard
+					toggle_dashboard=self.toggle_dashboard,
+
 				)
+
 
 			if obj.name == 'lab':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
