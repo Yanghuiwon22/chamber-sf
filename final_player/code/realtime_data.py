@@ -60,7 +60,7 @@ class Get_data:
             output['day_hum'] = realtime_lab['humidity']
 
             # return output
-            return [output['day_temp'], output['day_hum'], '--']
+            return [f"{output['day_temp']}°C", f"{output['day_hum']}%", '--']
 
 
     def get_grh_heyhome(self):
@@ -226,7 +226,7 @@ class Get_data:
             output['day_hum'] = realtime_lab['humidity']
 
             # return output
-            return [output['day_temp'], output['day_hum'], '--']
+            return [f"{output['day_temp']}°C", f"{output['day_hum']}%", '--']
         
     # 헤이홈 온실 데이터 정리 (화면에 표시되는 형식으로)
     def gh_display(self,dt):
@@ -534,22 +534,16 @@ class Get_data:
         # 첫 번째 Y축 (온도)
         ax1.plot(df['time'], df['lux'], color='green', marker='o', label='Lux')
         ax1.set_xlabel('time', fontweight='bold', fontsize=20)
-        ax1.set_ylabel('Temperature (°C)', color='red', fontweight='bold', fontsize=20)
-        ax1.tick_params(axis='y', labelcolor='red')
+        ax1.set_ylabel('Lux (°C)', color='green', fontweight='bold', fontsize=20)
+        ax1.tick_params(axis='y', labelcolor='green')
 
         ax1.set_xticks(df['time'][::6])
-        ax1.set_yticks(np.arange(-15, 51, 10))
+        # ax1.set_yticks(np.arange(-15, 51, 10))
 
         ax1.set_xticklabels(df['time'][::6], fontweight='bold', fontsize=15)  # X축 레이블 회전
 
-        # 두 번째 Y축 (습도)
-        ax2 = ax1.twinx()  # 두 번째 Y축 추가
-        ax2.plot(df['time'], df['hum'], color='blue', marker='o', label='Humidity (%)')
-        ax2.set_ylabel('Humidity (%)', color='blue', fontweight='bold', fontsize=20)
-
-        ax2.set_yticks(np.arange(0, 101, 10))
-
-        ax2.tick_params(axis='y', labelcolor='blue')
+        fig.tight_layout()
+        plt.savefig('../graphics/aws_lux.png')
 
         return df
 
