@@ -299,7 +299,7 @@ class DashBoard:
                     self.timer.activate()
 
     def control_chamber(self, data):
-        url = "http://192.168.50.43/"
+        url = "http://192.168.0.3/"
         url = url + data
         response = requests.get(url)
 
