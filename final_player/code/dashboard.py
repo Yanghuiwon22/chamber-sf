@@ -39,6 +39,7 @@ class DashBoard:
         self.lab_heyhome_graph = get_data.get_lab_heyhome()
         self.grh_heyhome_graph = get_data.get_grh_heyhome()
 
+
         self.lab_error = get_data.lab_error
 
 
@@ -600,6 +601,7 @@ class DashBoard:
 
 
         if self.player.pos_layer == 'lab_api':
+            self.get_lab_data = self.get_lab_data
             if self.index == 0:
                 for title_index, title_surf in enumerate(self.title_surf):
                     top = self.main_rect.top + title_index * (self.main_rect.height / 2 )
@@ -617,6 +619,20 @@ class DashBoard:
                 for text_index, text_surf in enumerate([self.text_surf]):
                     top = self.main_rect.top + self.main_rect.height/2 + self.space + self.ptitle_rect.height + self.space
                     self.show_entry_pd(text_surf, top)
+
+                # 1페이지 구성 - 날짜
+                print(self.get_lab_data[1])
+                date_text = str(self.get_lab_data[1])
+                print(date_text)
+
+                date_surf = self.font.render(date_text, False, 'black')
+
+                top = self.bg_rect.bottom - date_surf.get_height() - self.space * 2
+                left = self.bg_rect.right - date_surf.get_width() - self.space * 2
+                # pygame.draw.rect(self.display_surface, 'red', self.bg_rect)
+
+                self.display_surface.blit(date_surf, (left, top))
+
 
             elif self.index == 1:
                 # 2페이지 구성 - 그래프 제목

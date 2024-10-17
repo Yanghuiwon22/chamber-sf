@@ -59,8 +59,7 @@ class Game:
 
 
 	def show_start_screen(self):
-		# game splash/start screen
-
+		# game splash/start screene
 		self.screen.fill(GREEN)
 		self.draw_text('Greenhouse', 60, WHITE, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4)
 		self.draw_text("Press a key to play",

@@ -60,7 +60,7 @@ class Get_data:
             output['day_hum'] = realtime_lab['humidity']
 
             # return output
-            return [f"{output['day_temp']}°C", f"{output['day_hum']}%", '--']
+            return [f"{output['day_temp']}°C", f"{output['day_hum']}%", '--'], output['day_time']
 
 
     def get_grh_heyhome(self):
