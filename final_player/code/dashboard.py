@@ -534,69 +534,69 @@ class DashBoard:
                 # top_img = self.bg_rect.top + self.space * 4 + title_surf.get_height()
                 # left_img = self.bg_rect.left + self.bg_rect.width / 2 - img.get_width() / 2
                 #
-                # self.display_surface.blit(img, (left_img, top_img))
-            elif self.index == 2:
-                # 광 그래프 표시
-                self.mini_chamber_graph = False
-
-                if not self.mini_chamber_graph:
-                    file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/fake_lux.png')
-                    date_text = '2024-05-23'
-                    date_surf = self.font.render(date_text, False, 'red')
-                    top = self.bg_rect.top + self.space * 4
-                    self.show_entry_date(date_surf, top)
-                else:
-                    file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/chamber_lux.png')
-                    date_text = (datetime.now().date() - timedelta(days=1)).strftime('%Y-%m-%d')
-                    date_surf = self.font.render(date_text, False, 'black')
-                    top = self.bg_rect.top + self.space * 4
-                    self.show_entry_date(date_surf, top)
-
-                # 날짜 표시
-                top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
-                self.show_entry_img(file_path, top)
-
-                if not self.mini_chamber_graph:
-                    self.show_entry_fake(top=self.bg_rect.bottom + self.space)
-
-            elif self.index == 3:
-                # date_surf = self.date_surf[-1]
-                # top = self.bg_rect.top + self.space*4
-                # self.show_entry_date(date_surf, top)
-                #
-                # file_path = '../graphics/chamber_graph/week_graph_t_h.png'
-                # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
-                # self.show_entry_img(file_path, top)
-                if not self.mini_chamber_graph:
-                    file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/fake_lux.png')
-                    date_text = '2024-05-23'
-                    date_surf = self.font.render(date_text, False, 'red')
-                    top = self.bg_rect.top + self.space * 4
-                    self.show_entry_date(date_surf, top)
-                else:
-                    file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/chamber_lux.png')
-                    date_text = (datetime.now().date() - timedelta(days=1)).strftime('%Y-%m-%d')
-                    date_surf = self.font.render(date_text, False, 'red')
-                    top = self.bg_rect.top + self.space * 4
-                    self.show_entry_date(date_surf, top)
-
-                    # 날짜 표시
-                top = self.bg_rect.top + self.space * 4 + self.date_rect.height + self.space
-                self.show_entry_img(file_path, top)
-
-                if not self.mini_chamber_graph:
-                    self.show_entry_fake(top=self.bg_rect.bottom + self.space)
-
-
-            elif self.index == 4:
-                date_surf = self.date_surf[-1]
-                top = self.bg_rect.top + self.space*4
-                self.show_entry_date(date_surf, top)
-
-                file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/week_graph.png')
-                top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
-                self.show_entry_img(file_path, top)
-
+            #     # self.display_surface.blit(img, (left_img, top_img))
+            # elif self.index == 2:
+            #     # 광 그래프 표시
+            #     self.mini_chamber_graph = False
+            #
+            #     if not self.mini_chamber_graph:
+            #         file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/fake_lux.png')
+            #         date_text = '2024-05-23'
+            #         date_surf = self.font.render(date_text, False, 'red')
+            #         top = self.bg_rect.top + self.space * 4
+            #         self.show_entry_date(date_surf, top)
+            #     else:
+            #         file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/chamber_lux.png')
+            #         date_text = (datetime.now().date() - timedelta(days=1)).strftime('%Y-%m-%d')
+            #         date_surf = self.font.render(date_text, False, 'black')
+            #         top = self.bg_rect.top + self.space * 4
+            #         self.show_entry_date(date_surf, top)
+            #
+            #     # 날짜 표시
+            #     top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
+            #     self.show_entry_img(file_path, top)
+            #
+            #     if not self.mini_chamber_graph:
+            #         self.show_entry_fake(top=self.bg_rect.bottom + self.space)
+            #
+            # elif self.index == 3:
+            #     # date_surf = self.date_surf[-1]
+            #     # top = self.bg_rect.top + self.space*4
+            #     # self.show_entry_date(date_surf, top)
+            #     #
+            #     # file_path = '../graphics/chamber_graph/week_graph_t_h.png'
+            #     # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
+            #     # self.show_entry_img(file_path, top)
+            #     if not self.mini_chamber_graph:
+            #         file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/fake_lux.png')
+            #         date_text = '2024-05-23'
+            #         date_surf = self.font.render(date_text, False, 'red')
+            #         top = self.bg_rect.top + self.space * 4
+            #         self.show_entry_date(date_surf, top)
+            #     else:
+            #         file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/chamber_lux.png')
+            #         date_text = (datetime.now().date() - timedelta(days=1)).strftime('%Y-%m-%d')
+            #         date_surf = self.font.render(date_text, False, 'red')
+            #         top = self.bg_rect.top + self.space * 4
+            #         self.show_entry_date(date_surf, top)
+            #
+            #         # 날짜 표시
+            #     top = self.bg_rect.top + self.space * 4 + self.date_rect.height + self.space
+            #     self.show_entry_img(file_path, top)
+            #
+            #     if not self.mini_chamber_graph:
+            #         self.show_entry_fake(top=self.bg_rect.bottom + self.space)
+            #
+            #
+            # elif self.index == 4:
+            #     date_surf = self.date_surf[-1]
+            #     top = self.bg_rect.top + self.space*4
+            #     self.show_entry_date(date_surf, top)
+            #
+            #     file_path = os.path.join(ALL_PATH, 'graphics/chamber_graph/week_graph.png')
+            #     top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
+            #     self.show_entry_img(file_path, top)
+            #
 
 
         if self.player.pos_layer == 'lab_api':
@@ -638,11 +638,11 @@ class DashBoard:
                 left_img = self.bg_rect.left + self.bg_rect.width/2 - img.get_width()/2
 
                 self.display_surface.blit(img, (left_img, top_img))
-
-            elif self.index == 2:
-                date_surf = self.date_surf[self.date_index]
-                top = self.bg_rect.top + self.space*4
-                self.show_entry_date(date_surf, top)
+            #
+            # elif self.index == 2:
+            #     date_surf = self.date_surf[self.date_index]
+            #     top = self.bg_rect.top + self.space*4
+            #     self.show_entry_date(date_surf, top)
 
                 # self.chamber_lux = f'..\graphics\chamber_graph\chamber_lux.png'
                 # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
@@ -688,14 +688,14 @@ class DashBoard:
 
                 self.display_surface.blit(img, (left_img, top_img))
 
-            elif self.index == 2:
-                    date_surf = self.date_surf[self.date_index]
-                    top = self.bg_rect.top + self.space*4
-                    self.show_entry_date(date_surf, top)
-
-                    # self.chamber_lux = f'..\graphics\chamber_graph\chamber_lux.png'
-                    # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
-                    # self.show_entry_img(self.chamber_lux, top)
+            # elif self.index == 2:
+            #         date_surf = self.date_surf[self.date_index]
+            #         top = self.bg_rect.top + self.space*4
+            #         self.show_entry_date(date_surf, top)
+            #
+            #         # self.chamber_lux = f'..\graphics\chamber_graph\chamber_lux.png'
+            #         # top = self.bg_rect.top + self.space*4 + self.date_rect.height + self.space
+            #         # self.show_entry_img(self.chamber_lux, top)
 
         if self.player.pos_layer == 'buan_api':
             if self.index == 0:

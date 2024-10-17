@@ -80,23 +80,22 @@ class Get_data:
 
             # 첫 번째 Y축 (온도)
             ax1.plot(df['time'], df['temp'], color='red', marker='o', label='Temperature (°C)')
-            ax1.set_xlabel('Time', fontweight='bold', fontsize=20)
+            ax1.set_xlabel('time', fontweight='bold', fontsize=20)
             ax1.set_ylabel('Temperature (°C)', color='red', fontweight='bold', fontsize=20)
             ax1.tick_params(axis='y', labelcolor='red')
 
             ax1.set_xticks(df['time'][::6])
-            ax1.set_xticklabels(df['time'][::6], rotation=45, fontweight='bold', fontsize=20)  # X축 레이블 회전
+            ax1.set_yticks(np.arange(-15, 51, 10))
 
-            ax1.set_yticks(df['temp'])
-            ax1.set_yticklabels(df['temp'], rotation=45, fontweight='bold', fontsize=20)  # X축 레이블 회전
+            ax1.set_xticklabels(df['time'][::6], fontweight='bold', fontsize=15)  # X축 레이블 회전
 
             # 두 번째 Y축 (습도)
             ax2 = ax1.twinx()  # 두 번째 Y축 추가
             ax2.plot(df['time'], df['humid'], color='blue', marker='o', label='Humidity (%)')
             ax2.set_ylabel('Humidity (%)', color='blue', fontweight='bold', fontsize=20)
 
-            ax2.set_yticks(df['humid'])
-            ax2.set_yticklabels(df['humid'], fontsize=15)  # X축 레이블 회전
+            ax2.set_yticks(np.arange(0, 101, 10))
+
             ax2.tick_params(axis='y', labelcolor='blue')
 
             # 그래프 타이틀 설정 및 레이아웃 조정
@@ -119,28 +118,24 @@ class Get_data:
 
             fig, ax1 = plt.subplots(figsize=(10, 6))
 
-            # 첫 번째 Y축 (온도)
             ax1.plot(df['time'], df['temp'], color='red', marker='o', label='Temperature (°C)')
-            ax1.set_xlabel('Time', fontweight='bold', fontsize=20)
+            ax1.set_xlabel('time', fontweight='bold', fontsize=20)
             ax1.set_ylabel('Temperature (°C)', color='red', fontweight='bold', fontsize=20)
             ax1.tick_params(axis='y', labelcolor='red')
 
             ax1.set_xticks(df['time'][::6])
-            ax1.set_xticklabels(df['time'][::6], rotation=45, fontweight='bold', fontsize=20)  # X축 레이블 회전
+            ax1.set_yticks(np.arange(-15, 51, 10))
 
-            ax1.set_yticks(df['temp'])
-            ax1.set_yticklabels(df['temp'], rotation=45, fontweight='bold', fontsize=20)  # X축 레이블 회전
+            ax1.set_xticklabels(df['time'][::6], fontweight='bold', fontsize=15)  # X축 레이블 회전
 
             # 두 번째 Y축 (습도)
             ax2 = ax1.twinx()  # 두 번째 Y축 추가
             ax2.plot(df['time'], df['humid'], color='blue', marker='o', label='Humidity (%)')
             ax2.set_ylabel('Humidity (%)', color='blue', fontweight='bold', fontsize=20)
 
-            ax2.set_yticks(df['humid'])
-            ax2.set_yticklabels(df['humid'], fontsize=15)  # X축 레이블 회전
+            ax2.set_yticks(np.arange(0, 101, 10))
 
             ax2.tick_params(axis='y', labelcolor='blue')
-
             # 그래프 타이틀 설정 및 레이아웃 조정
             fig.tight_layout()
             plt.savefig('../graphics/temperature_humidity_graph.png')

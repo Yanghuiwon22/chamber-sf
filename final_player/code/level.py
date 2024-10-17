@@ -186,7 +186,8 @@ class Level:
 			if obj.name == 'aws_lab':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
-
+		for x, y, surf in tmx_data.get_layer_by_name('Grh crop').tiles():
+			Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
 
 
 		for x, y, surf in tmx_data.get_layer_by_name('Grh Decoration').tiles():
@@ -194,6 +195,7 @@ class Level:
 
 		for x, y, surf in tmx_data.get_layer_by_name('Buan Decoration').tiles():
 			Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites_map, self.collision_sprites])
+
 
 
 		Generic(
